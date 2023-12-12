@@ -2,10 +2,10 @@
   "name": "rummy",
   "version": "0.0.1",
   "description": "A server for the Rummy card game",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon node app.js"
+    "dev": "nodemon node server.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,13 @@
   "homepage": "https://github.com/sshh12/Rummy#readme",
   "dependencies": {
     "axios": "^1.6.2",
+    "bcrypt": "^5.1.1",
+    "cookie-encrypter": "^1.0.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
     "express": "^4.16.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
     "passport": "^0.7.0",
     "passport-oauth2": "^1.7.0",
     "ws": "^4.0.0"

@@ -1,49 +1,80 @@
 const express = require('express')
+const passport = require('passport')
 const http = require('http');
 const WebSocket = require('ws');
-const passport = require('passport')
-const OAuth2Strategy = require('passport-oauth2');
 const Game = require('./game');
-const axios = require('axios')
 const app = express();
+const cookieParser = require('cookie-parser')
+const cookieEncrypter = require('cookie-encrypter')
+require("dotenv").config();
+
+const {Auth,RedirectIfAuthenticated} = require('./Middlewares/auth.middleware');
+
 const server = http.createServer(app);
+
 const wss = new WebSocket.Server({ server });
+
 const rummy = new Game(wss);
+
+const {APP_NAME, COOKIE_ENCRYPT_SECRET} = process.env
 
 require('./passport');
 
+app.use(cookieParser(COOKIE_ENCRYPT_SECRET));
+app.use(cookieEncrypter(COOKIE_ENCRYPT_SECRET));
+
+//? routes
+// require("./Routes")();
+
+app.get('/', (req, res) => {
+  res.redirect('/home');
+});
 
 
 app.get('/alby_callback',
   passport.authenticate('oauth2', { failureRedirect: '/login/alby', session:false }),
   function (req, res) {
-      // User has successfully authenticated, redirect
-      res.redirect('/')
+      const {user} = req;
+      if( user ) {
+        const currentTime = new Date().getTime();
+        const expires = new Date(currentTime + 30 * 24 * 60 * 60 * 1000);
+        res.cookie(APP_NAME, JSON.stringify({ access_token : user._token }), {
+          secure: true,
+          httpOnly: true,
+          expires: expires,
+        });
+        res.redirect('/home')
+      } else {
+        res.redirect('/login/alby')
+      }
+     
   });
 
 app.get('/login/alby', 
   passport.authenticate('oauth2', { 
       scope: ['account:read', 'invoices:read','invoices:create','transactions:read','balance:read','payments:send'], 
-      successReturnToOrRedirect: '/' 
+      successReturnToOrRedirect: '/home' 
   })
 );
 
 // Serve Static Files/Assets
 app.use(express.static('public'));
 
-// Ignore Socket Errors
-wss.on('error', () => console.log('*errored*'));
-wss.on('close', () => console.log('*disconnected*'));
 
 /*----------------------ENDPOINTS----------------------*/
 
 /*----------------------ENDPOINTS----------------------*/
-app.get('/login', (req, res) => {
+app.get('/login', RedirectIfAuthenticated, (req, res) => {
   res.sendFile(__dirname + '/public/login.html');
 });
 
+app.get('/test', Auth,
+ (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
 
-app.get('/', (req, res) => {
+app.get('/home', Auth,
+ (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
@@ -52,7 +83,7 @@ app.get('/join/:lobby', (req, res) => {
   if (rummy.addLobby(code)) {
     res.redirect('/game/' + req.params.lobby + '/' + rummy.lobbys[code].token);
   } else {
-    res.redirect('/');
+    res.redirect('/home');
   }
 });
 
@@ -61,7 +92,7 @@ app.get('/joincpu/:lobby', (req, res) => {
   if (rummy.addLobby(code, cpu=true)) {
     res.redirect('/game/' + req.params.lobby + '/' + rummy.lobbys[code].token);
   } else {
-    res.redirect('/');
+    res.redirect('/home');
   }
 });
 
@@ -71,12 +102,13 @@ app.get('/game/:lobby/:token', (req, res) => {
   if (req.params.token && rummy.lobbys[code] && rummy.lobbys[code].token == token) {
     res.sendFile(__dirname + '/public/game.html');
   } else {
-    res.redirect('/');
+    res.redirect('/home');
   }
 });
 /*-----------------------------------------------------*/
 
-// Start Server
-server.listen(8000, () => {
-  console.log('Listening on port 8000...')
-});
+module.exports = {
+  app,
+  wss,
+  server
+};
