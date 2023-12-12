@@ -1,0 +1,30 @@
+{
+  "name": "rummy",
+  "version": "0.0.1",
+  "description": "A server for the Rummy card game",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sshh12/Rummy.git"
+  },
+  "author": "SSHH.IO",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sshh12/Rummy/issues"
+  },
+  "homepage": "https://github.com/sshh12/Rummy#readme",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "express": "^4.16.2",
+    "passport": "^0.7.0",
+    "passport-oauth2": "^1.7.0",
+    "ws": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
