@@ -9,7 +9,6 @@ module.exports = class Game {
    * @param {WebSocketServer} wss - The websocket server
    */
   constructor(wss) {
-
     this.wss = wss;
     this.lobbys = {};
 

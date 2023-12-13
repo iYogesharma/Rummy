@@ -3,11 +3,11 @@
  */
 
 let joinGame = () => { // Joins/Creates regular game
-  window.location.href = "/join/" + $('#code').val();
+  window.location.href = "/game/join/" + $('#code').val();
 };
 
 let joinCPU = () => { // Creates CPU game
-  window.location.href = "/joincpu/" + $('#code').val();
+  window.location.href = "/game/joincpu/" + $('#code').val();
 };
 
 
