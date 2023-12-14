@@ -7,10 +7,9 @@ const rummy = new Game(wss);
 
 
 exports.joinLobby = (req, res) => {
-
-
     let code = req.params.lobby;
-    if (rummy.addLobby(code)) {
+ 
+    if (rummy.addLobby(code, false, req.user._id)) {
         res.redirect('/game/' + req.params.lobby + '/' + rummy.lobbys[code].token);
     } else {
         res.redirect('/home');
@@ -20,7 +19,9 @@ exports.joinLobby = (req, res) => {
 
 exports.joinCpuLobby = (req, res) => {
     let code = req.params.lobby;
-    if (rummy.addLobby(code, cpu=true)) {
+
+    
+    if (rummy.addLobby(code, cpu=true, req.user?._id)) {
         res.redirect('/game/' + req.params.lobby + '/' + rummy.lobbys[code].token);
     } else {
         res.redirect('/home');
@@ -35,4 +36,5 @@ exports.showGameScreen = (req, res) => {
     } else {
         res.redirect('/home');
     }
+   
 }

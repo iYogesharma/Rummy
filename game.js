@@ -11,9 +11,10 @@ module.exports = class Game {
   constructor(wss) {
     this.wss = wss;
     this.lobbys = {};
-
+    const {APP_NAME} = process.env
+  
     wss.on('connection', (ws, req) => {
-
+      let token  = req.headers.cookie?.includes(APP_NAME+'=');
       this._send(ws, {
         cmd: 'connected'
       })
@@ -25,7 +26,7 @@ module.exports = class Game {
         if (data.cmd == 'status') {
           this._send(ws, {
             cmd: 'status',
-            status: this._retrieve_status(data.lobby)
+            status: this._retrieve_status(data.lobby, token)
           });
         } else if (data.token && this._verify(data)) { // If data is verified give it the the correct lobby
           this.lobbys[data.lobby].handleData(ws, data);
@@ -51,7 +52,7 @@ module.exports = class Game {
    * @param {string} code - The lobby code
    * @returns {string} The status
    */
-  _retrieve_status(code) {
+  _retrieve_status(code, auth = false) {
 
     if (/^\w{5,12}$/.test(code)) {
 
@@ -59,8 +60,10 @@ module.exports = class Game {
 
       if (lobby) {
         return lobby.isWaiting ? 'waiting' : 'closed';
-      } else {
+      } else if(auth) {
         return 'open';
+      } else {
+        return 'guest';
       }
 
     }
@@ -84,13 +87,13 @@ module.exports = class Game {
    * @param {boolean} [cpu=false] - If the lobby should contain a CPU player
    * @returns {boolean} If lobby exists
    */
-  addLobby(code, cpu = false) {
+  addLobby(code, cpu = false, auth = false) {
 
-    let status = this._retrieve_status(code);
+    let status = this._retrieve_status(code,auth);
 
     if (status == 'waiting' && !cpu) {
       return true;
-    } else if (status == 'open') {
+    } else if (status == 'open' || (status == 'guest' && cpu) ) {
       this.lobbys[code] = new Lobby(code, this, cpu); // Creates a new lobby
       return true;
     } else {

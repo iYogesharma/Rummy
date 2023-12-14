@@ -11,7 +11,7 @@ module.exports = router;
 router
     .get('/join/:lobby', Auth, GameControler.joinLobby)
   
-    .get('/joincpu/:lobby', Auth, GameControler.joinCpuLobby)
+    .get('/joincpu/:lobby', GameControler.joinCpuLobby)
   
-    .get('/:lobby/:token', Auth, GameControler.showGameScreen)
+    .get('/:lobby/:token', GameControler.showGameScreen)
     

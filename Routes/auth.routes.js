@@ -30,7 +30,7 @@ router
     })
 
     .get('/home', Auth, (req, res) => {
-        res.sendFile(global.appRoot + '/public/index.html');
+        res.sendFile(global.appRoot + '/public/home.html');
     })
 
     .get('/v1/balance', Auth, AlbyController.accountBalance)

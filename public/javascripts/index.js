@@ -26,6 +26,8 @@ handle.status = (data) => { // Handle getting the status of a lobby
       $('#lobbybtn').html('Create');
       $('#lobbybtn').on('click', () => joinGame());
       $('#cpubtn').on('click', () => joinCPU());
+    }else if (data.status == 'guest') {
+      $('#cpubtn').on('click', () => joinCPU());
     }
   }
 
