@@ -31,6 +31,39 @@
   </div>
 </body>
 
+<script>
+  function getBalance() {
+      // Replace 'YOUR_ACCESS_TOKEN' with the actual access token if needed
+      const accessToken = 'YOUR_ACCESS_TOKEN';
+      
+      // Replace 'http://localhost:8000/v1/balance' with the actual API endpoint
+      const apiUrl = 'http://localhost:8000/v1/balance';
+
+      fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${accessToken}`, // Include if authentication is required
+              'Content-Type': 'application/json'
+          }
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+      })
+      .then(balanceData => {
+          // Process balanceData as needed
+          console.log('Balance Data:', balanceData);
+          alert('Balance: ' + balanceData.balance); // Example: Display the balance in an alert
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Error fetching balance. Please try again.'); // Example: Show an error message
+      });
+  }
+</script>
+
 <script src="/javascripts/jquery.min.js"></script>
 <script src="/javascripts/socket.js"></script>
 <script src="/javascripts/index.js"></script>
