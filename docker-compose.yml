@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    volumes:
+     - rummy-db:/var/lib/mongo/data
+    ports:
+    - '28017:27017'
+
+
+  rummy:
+    container_name: rummy
+    build:
+      context: .
+    environment:
+      DATABASE_URI_DEV: "mongodb://mongo:27017/rummy"
+      DB_HOST: mongo
+    depends_on:
+      - mongo
+    ports:
+      - '8000:8000'
+        
+volumes:
+  rummy-db:
+
