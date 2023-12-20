@@ -1,71 +1,71 @@
 <html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <title>Rummy</title>
 
-<head>
+    <link rel="stylesheet" href="stylesheets/login.css" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>Rummy</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
 
-  <link rel="stylesheet" href="/stylesheets/main.css">
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" crossorigin="anonymous">
-
-</head>
-
-<body>
-  <div class="page-header">
-    <h1 class="centered">Rummy</h1>
-    <p class="lead centered">Enter or create a game lobby</p>
-  </div>
-  <div class="justsmallenough centered panel panel-default">
-    <div class="panel-body">
-      <div class="input-group">
-        <input id="code" type="text" class="form-control">
-        <span class="input-group-btn">
-        <button id="lobbybtn" class="btn btn-default" type="button">Join</button>
-        <button style="display: none" id="cpubtn" class="btn btn-warning" type="button">CPU</button>
-        </span>
+  <body>
+    <div class="full-container">
+      <img src="background.png" alt="Rummy Game" />
+      <div class="frame">
+        <img src="Frame.png" alt="Frame" />
+        <h1 class="heading">GIN RUMMY</h1>
+        <div class="login-box">
+          <h1 class="login-heading">Welcome!</h1>
+          <h3 class="login-des">Please Login To Continue</h3>
+          <h4 class="login-subDes">
+            In order to play with your friends please login with your lightning
+            wallet
+          </h4>
+          <!-- <div>
+            <a href="http://localhost:8000/login/alby" class="button-link">
+              <button type="submit" class="login-button">Login</button>
+              <input type="hidden" name="" id="code">
+            </a>
+          </div> -->
+          <div class="input-group">
+            <input id="code" type="text" class="form-control" />
+            <span class="input-group-btn">
+              <button id="lobbybtn" class="btn btn-default" type="button">
+                Create/Join
+              </button>
+              </span>
+          <div>
+            <div class="divider"></div>
+            <p class="smalltext">or</p>
+          </div>
+          <div>
+            <p class="description">Want some practice before real match?</p>
+            <div>
+              <button class="practice-button" id="cpubtn">Play With CPU</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</body>
-
-<script>
-  function getBalance() {
-      // Replace 'YOUR_ACCESS_TOKEN' with the actual access token if needed
-      const accessToken = 'YOUR_ACCESS_TOKEN';
-      
-      // Replace 'http://localhost:8000/v1/balance' with the actual API endpoint
-      const apiUrl = 'http://localhost:8000/v1/balance';
-
-      fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-              'Authorization': `Bearer ${accessToken}`, // Include if authentication is required
-              'Content-Type': 'application/json'
-          }
-      })
-      .then(response => {
-          if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-      })
-      .then(balanceData => {
-          // Process balanceData as needed
-          console.log('Balance Data:', balanceData);
-          alert('Balance: ' + balanceData.balance); // Example: Display the balance in an alert
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          alert('Error fetching balance. Please try again.'); // Example: Show an error message
-      });
-  }
-</script>
-
-<script src="/javascripts/jquery.min.js"></script>
-<script src="/javascripts/socket.js"></script>
-<script src="/javascripts/index.js"></script>
-
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/socket.js"></script>
+    <script src="/javascripts/index.js"></script>
+  </body>
 </html>
