@@ -119,4 +119,20 @@ img {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  text-align: center;
+}
+
+.divider {
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.divider::before,
+.divider::after {
+  flex: 1;
+  content: "";
+  padding: 1px;
+  background: linear-gradient( #333, #fff); /* Replace red and blue with your desired gradient colors */
+  margin: 5px;
 }

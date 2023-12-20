@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="/stylesheets/login.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <div class="full-container">
@@ -21,18 +36,21 @@
           </h4>
           <div>
             <a href="http://localhost:8000/login/alby" class="button-link">
-              <button type="submit" class="login-button">Login</button>
-              <input type="hidden" name="" id="code">
+              <button type="submit" class="btn btn-primary btn-lg btn-block">
+                Login
+              </button>
+              <input type="hidden" name="" id="code" />
             </a>
           </div>
-          <div>
-            <div class="divider"></div>
-            <p class="smalltext">or</p>
+          <div class="divider">
+            <span class="smalltext">or</span>
           </div>
           <div>
             <p class="description">Want some practice before real match?</p>
             <div>
-              <button class="practice-button" id="cpubtn">Play With CPU</button>
+              <button class="btn btn-danger btn-lg btn-block" id="cpubtn">
+                Play With CPU
+              </button>
             </div>
           </div>
         </div>
