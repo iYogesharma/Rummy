@@ -14,10 +14,10 @@
         // Update the DOM with the fetched balance
         document.getElementById(
           "balance-container"
-        ).innerText = `Balance: ${data.data.balance}`;
+        ).innerText = `${data.data.balance}`;
         document.getElementById(
           "currency-container"
-        ).innerText = `Currency: ${data.data.currency}`;
+        ).innerText = `Available ${data.data.currency} Balance`;
 
         // Call the function to update the lobby button visibility
         updateLobbyButtonVisibility(data.data.balance);
