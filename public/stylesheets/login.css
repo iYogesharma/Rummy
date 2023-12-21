@@ -133,6 +133,33 @@ img {
   flex: 1;
   content: "";
   padding: 1px;
-  background: linear-gradient( #333, #fff); /* Replace red and blue with your desired gradient colors */
+  background: linear-gradient(#333, #fff);
   margin: 5px;
+}
+
+.balance-background-container {
+  position: absolute;
+  top: 5%;
+  right: 0%;
+  background-color: #d9d9d9;
+  opacity: 0.8;
+  /* width: 15%; */
+  padding: 10px;
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+}
+.balance-main-container{
+  padding-left: 15px;
+}
+
+.currency-text{
+  font-size: 15px;
+  font-weight: 400;
+  color: #796F6F;
+}
+
+.balance-text{
+  font-size: 25px;
+  color: #D40011;
+  font-weight: bold;
 }
