@@ -5,7 +5,7 @@ const { connection } = require("./Database/connection");
 const { PORT, NODE_ENV } = process.env;
 
 // Ignore Socket Errors
-wss.on('error', () => console.log('*errored*'));
+wss.on('error', (err) => console.log('*errored*'));
 wss.on('close', () => console.log('*disconnected*'));
 
 
