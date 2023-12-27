@@ -48,4 +48,20 @@ async function login ( user, device_id ) {
     } 
 }
 
-module.exports = { login, loginUserById};
+function decodeToken(token){
+    try {
+        token = JSON.parse(token);
+        const {access_token} = token;
+        if( access_token ) {
+            const decoded = jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
+            if( decoded._id ) return decoded;
+            else false; 
+        } else {
+            return false;
+        }
+    } catch (err) {
+        return false;
+    }
+}
+
+module.exports = { login, loginUserById, decodeToken};

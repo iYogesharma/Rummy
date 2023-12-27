@@ -1,4 +1,5 @@
 const Crypto = require("crypto");
+const User = require("./Database/Models/user.model");
 
 // Exports Lobby Class
 module.exports = class Lobby {
@@ -21,6 +22,7 @@ module.exports = class Lobby {
     this.isWaiting = true;
     this.choosePhase = true;
     this.turn = 0;
+    this.balance = 10 //satoshi
 
     this.selfDestruct = null;
 
@@ -33,7 +35,7 @@ module.exports = class Lobby {
    * @param {WebSocket} ws - The clients websocket
    * @param {Object} data - The data recieved
    */
-  handleData(ws, data) {
+  handleData(ws, data, user = null) {
 
     clearTimeout(this.selfDestruct);  // Continue to postpone self destruct until no data is sent
     this.selfDestruct = setTimeout(() => {
@@ -44,7 +46,7 @@ module.exports = class Lobby {
 
     if (data.cmd == 'join') {
 
-      this._process_join(ws);
+      this._process_join(ws,user);
 
     } else if (data.cmd == 'click' && this.sockets.indexOf(ws) == this.turn) {
 
@@ -219,8 +221,13 @@ module.exports = class Lobby {
    * Checks If a Player Won and then Sends Win/Loss Data
    */
   _check_win() {
+    let cpu = false;
     for(let i = 0; i < this.playerCards.length; i++) {
       if(this.playerCards[i].length == 0) {
+        if(this.sockets[i].user &&  this.sockets[i ^ 1].user) {
+          this._credit_user(this.sockets[i].user);
+          this._debit_user(this.sockets[i ^ 1].user);
+        }
         this._send(this.sockets[i], {cmd: 'win', score: this._calculate_card_score(this.playerCards[i ^ 1])});
         this._send(this.sockets[i ^ 1], {cmd: 'loss'});
         this._doSelfDistruct();
@@ -233,7 +240,7 @@ module.exports = class Lobby {
    * Handles a Client Joining
    * @param {WebSocket} ws - The client socket
    */
-  _process_join(ws) {
+  _process_join(ws, user = null) {
 
     if (!this.isWaiting || this.sockets.indexOf(null) == -1) { // If lobby full -> tell new client to leave
 
@@ -580,6 +587,17 @@ module.exports = class Lobby {
 
     }, 2200);
 
+  }
+
+
+  async _credit_user(user){
+    const balance = this.balance;
+    await User.findOneAndUpdate({_id: user._id}, {$inc:{'balance': `${balance}`} })
+  }
+
+  async _debit_user(user){
+    const balance = this.balance;
+    await User.findOneAndUpdate({_id: user._id}, {$inc:{'balance': `-${balance}`} })
   }
 
 }

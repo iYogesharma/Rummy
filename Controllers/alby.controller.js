@@ -10,19 +10,20 @@ exports.accountBalance = async ( req,res ) => {
 
     try {
         if(user) {
-            const access_token = user.accessToken;
+            // const access_token = user.accessToken;
     
-            const {data} = await axios.get('https://api.getalby.com/balance',{
-                headers: {
-                    'Authorization': `Bearer ${access_token}`
-                }
-            });
-            return res.status(200).json({success:true, data:data, message:"User Account Balance"});
+            // const {data} = await axios.get('https://api.getalby.com/balance',{
+            //     headers: {
+            //         'Authorization': `Bearer ${access_token}`
+            //     }
+            // });
+            return res.status(200).json({success:true, data:{balance:user.balance,currency:'Satoshi'}, message:"User Account Balance"});
             
         } else {
             return res.status(400).json({success:false, data:null, message: "User Not Found"});
         }
-    } catch {
+    } catch(AxiosError) {
+        res.clearCookie(process.env.APP_NAME);
         return res.status(401).json({success:false, data:null, message: "Not Able To Connect To Wallet"});
     }
 }

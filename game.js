@@ -1,5 +1,6 @@
 const Lobby = require('./lobby');
-
+const {decodeToken} = require('./Helpers/auth.helper');
+const { decryptCookie } = require('cookie-encrypter');
 // Exports Game Class
 module.exports = class Game {
 
@@ -11,10 +12,10 @@ module.exports = class Game {
   constructor(wss) {
     this.wss = wss;
     this.lobbys = {};
-    const {APP_NAME} = process.env
-  
+   
     wss.on('connection', (ws, req) => {
-      let token  = req.headers.cookie?.includes(APP_NAME+'=');
+      ws.user = this._user(req);
+    
       this._send(ws, {
         cmd: 'connected'
       })
@@ -26,7 +27,7 @@ module.exports = class Game {
         if (data.cmd == 'status') {
           this._send(ws, {
             cmd: 'status',
-            status: this._retrieve_status(data.lobby, token)
+            status: this._retrieve_status(data.lobby, ws.user)
           });
         } else if (data.token && this._verify(data)) { // If data is verified give it the the correct lobby
           this.lobbys[data.lobby].handleData(ws, data);
@@ -36,6 +37,22 @@ module.exports = class Game {
 
     });
 
+  }
+
+  _user(req) {
+    const {APP_NAME,COOKIE_ENCRYPT_SECRET} = process.env
+    let token  = req.headers.cookie?.includes(APP_NAME+'=');
+    if( token ) {
+      let cookie = req.headers.cookie?.split(APP_NAME+'=')[1];
+      if(cookie ) {
+        cookie = cookie.replace("%3A",":").replace("%3A",":")
+        token = decryptCookie(cookie.slice(2), {
+          algorithm: 'aes256',
+          key: COOKIE_ENCRYPT_SECRET
+        });
+        return decodeToken(token);
+      } else false;
+    } else false;
   }
 
   /**
