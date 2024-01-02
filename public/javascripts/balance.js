@@ -1,6 +1,6 @@
 // Function to fetch the user's balance and update the DOM
 function fetchBalance() {
-  fetch("http://localhost:8000/v1/balance/")
+  fetch("/v1/balance/")
     .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
