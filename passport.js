@@ -6,13 +6,13 @@ const User = require('./Database/Models/user.model')
 
 const { login } = require('./Helpers/auth.helper');
 
-const {ALBY_CLIENT_ID,ALBY_CLIENT_SECRET} =  process.env;
+const {ALBY_CLIENT_ID,ALBY_CLIENT_SECRET,ALBY_REDIRECT} =  process.env;
 let strategy = new OAuth2Strategy({
     authorizationURL: 'https://getalby.com/oauth',
     tokenURL: 'https://api.getalby.com/oauth/token',
     clientID: ALBY_CLIENT_ID,
     clientSecret: ALBY_CLIENT_SECRET,
-    callbackURL: '/alby_callback'
+    callbackURL: ALBY_REDIRECT
   },
   async function (accessToken, refreshToken, profile, cb) {
     try {
