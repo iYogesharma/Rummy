@@ -26,6 +26,20 @@ socket.onmessage = (message) => {
 
 }
 
+let waitForConnection = function (callback, interval) {
+  if (socket.readyState === 1) {
+      callback();
+  } else {
+      var that = this;
+      // optional: implement backoff for interval here
+      setTimeout(function () {
+          waitForConnection(callback, interval);
+      }, interval);
+  }
+};
 let send = (data) => { // Send Data (as string)
-  socket.send(JSON.stringify(data));
+  waitForConnection( function() {
+    socket.send(JSON.stringify(data));
+  },1000)
+ 
 }

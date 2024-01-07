@@ -1,25 +1,14 @@
 const jwt = require('jsonwebtoken');
-
+const {decodeToken} = require('../Helpers/auth.helper');
 
 function Auth( req, res, next ) {
     const {APP_NAME,ACCESS_TOKEN_SECRET} = process.env
     let token  = req.cookies[APP_NAME];
     if( token ) {
-        token = JSON.parse(token);
-        const {access_token} = token;
-    
-        if( access_token ) {
-            try {
-                const decoded = jwt.verify(access_token, ACCESS_TOKEN_SECRET);
-                if( decoded._id ) {
-                    req.user = decoded;
-                    next();
-                } else {
-                    return res.redirect('/login');
-                }
-            } catch (err) {
-                return res.redirect('/login');
-            }
+        const decoded = decodeToken(token);
+        if( decoded ) {
+            req.user = decoded;
+            next();
         } else {
             return res.redirect('/login');
         }

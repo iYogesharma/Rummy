@@ -12,6 +12,7 @@ const userSchema = new Schema({
   refreshToken: { type: String,  default: null },
   tokenExpiry: { type: Date, default: null},
   lightningAddress: { type: String, default: null},
+  balance: { type: Number, default: 1000},
   role: [
     {
       type: Schema.Types.ObjectId,
