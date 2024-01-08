@@ -16,10 +16,7 @@ let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) 
 	// You can use this as a unique reference for the user similar to a username or email address.
 	// const user = { id: linkingPublicKey };
 
-  try {
-
-  
-  const user = await User.find({lnId :linkingPublicKey, actice: true});
+  let user = await User.findOne({lnId :linkingPublicKey, actice: true});
 
   if( !user ) {
     user = await User.create({
@@ -33,9 +30,6 @@ let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) 
       if( token ) user._token = token;
     }
 	done(null, user);
-} catch (err) {
-  console.log(err)
-}
 });
 
 
@@ -89,12 +83,19 @@ let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) 
 //   };
 // };
   
+passport.serializeUser(function(user, done) {
+	done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+	done(null, user || null);
+});
 passport.use(strategy);
 
 const LnAuth = new LnurlAuth.Middleware({
   // The externally reachable URL for the lnurl-auth middleware.
   // It should resolve to THIS endpoint on your server.
-  callbackUrl: process.env.APP_URL+'/login',
+  callbackUrl: process.env.APP_URL+'/login/lightning',
   // The URL of the "Cancel" button on the login page.
   // When set to NULL or some other falsey value, the cancel button will be hidden.
   cancelUrl: '/',

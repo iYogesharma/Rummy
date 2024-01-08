@@ -14,10 +14,20 @@ const router = express.Router();
 
 router
     .get('/login/lightning', function(req, res, next) {
-		if (req.user) {
-			return res.redirect('/');
-		}
-		next();
+        const {user} = req;
+        const {APP_NAME} = process.env;
+        if( user ) {
+            const currentTime = new Date().getTime();
+            const expires = new Date(currentTime + 30 * 24 * 60 * 60 * 1000);
+            res.cookie(APP_NAME, JSON.stringify({ access_token : user._token }), {
+                secure: true,
+                httpOnly: true,
+                expires: expires,
+            });
+            return res.redirect('/home')
+        } else {
+            next();
+        }
 	}, LnAuth )
 
     // .get('/login/alby', 
