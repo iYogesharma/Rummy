@@ -6,18 +6,27 @@ const AuthController = require('../Controllers/auth.controller');
 const AlbyController = require('../Controllers/alby.controller');
 
 const {Auth,RedirectIfAuthenticated} = require('../Middlewares/auth.middleware');
+const { LnAuth } = require("../passport");
 
 const router = express.Router();
 
 
 
 router
-    .get('/login/alby', 
-        passport.authenticate('oauth2', { 
-            scope: ['account:read', 'invoices:read','invoices:create','transactions:read','balance:read','payments:send'], 
-            successReturnToOrRedirect: '/home' 
-        })
-    )
+    .get('/login/lightning', function(req, res, next) {
+		if (req.user) {
+			return res.redirect('/');
+		}
+		next();
+	}, LnAuth )
+
+    // .get('/login/alby', 
+    
+    //     passport.authenticate('oauth2', { 
+    //         scope: ['account:read', 'invoices:read','invoices:create','transactions:read','balance:read','payments:send'], 
+    //         successReturnToOrRedirect: '/home' 
+    //     })
+    // )
     
     .get(
         '/alby_callback',
@@ -25,7 +34,7 @@ router
         AuthController.handleCallback
     )
 
-    .get('/login', RedirectIfAuthenticated, (req, res) => {
+    .get('/login/', RedirectIfAuthenticated, (req, res) => {
         res.sendFile(global.appRoot + '/public/login.html');
     })
 

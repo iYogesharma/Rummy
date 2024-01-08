@@ -6,6 +6,7 @@ const app = express();
 const cookieParser = require('cookie-parser')
 const cookieEncrypter = require('cookie-encrypter')
 const helmet = require('helmet');
+const session = require('express-session');
 require("dotenv").config();
 
 
@@ -17,9 +18,18 @@ const { COOKIE_ENCRYPT_SECRET} = process.env
 
 require('./passport');
 
+app.use(session({
+	secret: '12345',
+	resave: false,
+	saveUninitialized: true,
+}));
+
 app.use(cookieParser(COOKIE_ENCRYPT_SECRET));
 app.use(cookieEncrypter(COOKIE_ENCRYPT_SECRET));
 app.use(helmet())
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.authenticate('lnurl-auth'));
 
 global.appRoot = __dirname;
 

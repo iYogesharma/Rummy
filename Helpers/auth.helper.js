@@ -15,8 +15,7 @@ async function loginUserById( id , device_id ) {
         },
         {
             _id: true,
-            email:true,
-            provider_id:true
+            lnId:true
         }
     );
 
@@ -42,9 +41,9 @@ async function login ( user, device_id ) {
       
         const { ACCESS_TOKEN_SECRET } = process.env;
 
-        const { _id, email, provider_id } = user;
+        const { _id, lnId } = user;
 
-        return jwt.sign({_id, email, provider_id}, ACCESS_TOKEN_SECRET, jwtOptions);
+        return jwt.sign({_id, lnId}, ACCESS_TOKEN_SECRET, jwtOptions);
     } 
 }
 
