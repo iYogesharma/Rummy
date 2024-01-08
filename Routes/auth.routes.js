@@ -32,7 +32,7 @@ router
         '/alby_callback',
         passport.authenticate('oauth2', { failureRedirect: '/login/alby', session:false }),
         AuthController.handleCallback
-    )
+    ) 
 
     .get('/login/', RedirectIfAuthenticated, (req, res) => {
         res.sendFile(global.appRoot + '/public/login.html');
