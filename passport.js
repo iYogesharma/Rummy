@@ -16,7 +16,10 @@ let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) 
 	// You can use this as a unique reference for the user similar to a username or email address.
 	// const user = { id: linkingPublicKey };
 
-  const user = await User.findOne({lnId :linkingPublicKey, actice: true});
+  try {
+
+  
+  const user = await User.find({lnId :linkingPublicKey, actice: true});
 
   if( !user ) {
     user = await User.create({
@@ -30,6 +33,9 @@ let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) 
       if( token ) user._token = token;
     }
 	done(null, user);
+} catch (err) {
+  console.log(err)
+}
 });
 
 
