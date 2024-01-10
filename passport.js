@@ -1,21 +1,12 @@
 
 const passport = require('passport')
-const OAuth2Strategy = require('passport-oauth2');
-const axios = require('axios')
 const User = require('./Database/Models/user.model')
 
 const { login } = require('./Helpers/auth.helper');
 
-const {ALBY_CLIENT_ID,ALBY_CLIENT_SECRET,ALBY_REDIRECT} =  process.env;
-
 const LnurlAuth = require('passport-lnurl-auth');
 
 let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) {
-	// The user has successfully authenticated using lnurl-auth.
-	// The linked public key is provided here.
-	// You can use this as a unique reference for the user similar to a username or email address.
-	// const user = { id: linkingPublicKey };
-
   let user = await User.findOne({lnId :linkingPublicKey, actice: true});
 
   if( !user ) {
@@ -31,57 +22,6 @@ let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) 
     }
 	done(null, user);
 });
-
-
-
-// let strategy1 = new OAuth2Strategy({
-//     authorizationURL: 'https://getalby.com/oauth',
-//     tokenURL: 'https://api.getalby.com/oauth/token',
-//     clientID: ALBY_CLIENT_ID,
-//     clientSecret: ALBY_CLIENT_SECRET,
-//     callbackURL: ALBY_REDIRECT
-//   },
-//   async function (accessToken, refreshToken, profile, cb) {
-//     try {
-//       const user = await User.findOneAndUpdate({providerId :profile.identifier}, {accessToken,refreshToken});
-
-//       if( !user ){
-//         const user = await User.create({
-//           email: profile.email,
-//           name: profile.name,
-//           accessToken:accessToken,
-//           refreshToken:refreshToken,
-//           lightningAddress:profile.lightning_address,
-//           provider: 'Alby',
-//           providerId: profile.identifier,
-//           email_validated: profile.email ? 1 : 0
-//         });
-//       }
-
-//       if( user ) {
-//         const token = await login(user, user.device_id);
-
-//         if( token ) user._token = token;
-//       }
-
-//       return cb(null,user);
-//     } catch {
-//       return cb(null,null);
-//     }
-//   });
-  
-// strategy.userProfile = async function(accessToken, done) {
-//   try {
-//     const {data}= await axios.get('https://api.getalby.com/user/me', {
-//       headers: {
-//         'Authorization' : `Bearer ${accessToken}`
-//       }
-//     })
-//     return done(null, data);
-//   } catch {
-//     return done(null, {});
-//   };
-// };
   
 passport.serializeUser(function(user, done) {
 	done(null, user);

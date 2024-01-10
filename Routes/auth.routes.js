@@ -29,15 +29,6 @@ router
             next();
         }
 	}, LnAuth )
-
-    // .get('/login/alby', 
-    
-    //     passport.authenticate('oauth2', { 
-    //         scope: ['account:read', 'invoices:read','invoices:create','transactions:read','balance:read','payments:send'], 
-    //         successReturnToOrRedirect: '/home' 
-    //     })
-    // )
-    
     .get(
         '/alby_callback',
         passport.authenticate('oauth2', { failureRedirect: '/login/alby', session:false }),
