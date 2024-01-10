@@ -224,7 +224,7 @@ module.exports = class Lobby {
     let cpu = false;
     for(let i = 0; i < this.playerCards.length; i++) {
       if(this.playerCards[i].length == 0) {
-        if(this.sockets[i].user &&  this.sockets[i ^ 1].user) {
+        if(this.sockets[i]?.user &&  this.sockets[i ^ 1]?.user) {
           this._credit_user(this.sockets[i].user);
           this._debit_user(this.sockets[i ^ 1].user);
         }
