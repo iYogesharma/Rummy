@@ -1,4 +1,5 @@
 
+const { decodeToken } = require('../Helpers/auth.helper');
 const {wss,server} = require('../app');
 
 const Game = require('../game');
@@ -31,7 +32,23 @@ exports.joinCpuLobby = (req, res) => {
 exports.showGameScreen = (req, res) => {
     let code = "" + req.params.lobby,
     token = req.params.token;
-    if (req.params.token && rummy.lobbys[code] && rummy.lobbys[code].token == token) {
+    const lobby = rummy.lobbys[code];
+
+    if( lobby && lobby.cpu == false){
+        let token  = req.cookies[process.env.APP_NAME];
+        if( token ) {
+            const decoded = decodeToken(token);
+            if( decoded ) {
+                req.user = decoded;
+            } else {
+                return res.redirect('/login');
+            }
+        }
+        else {
+            return res.redirect('/login');
+        }
+    }
+    if (req.params.token && lobby && rummy.lobbys[code].token == token) {
         res.sendFile(global.appRoot + '/public/game.html');
     } else {
         res.redirect('/home');
