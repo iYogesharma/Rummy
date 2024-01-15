@@ -17,7 +17,7 @@ module.exports = class Lobby {
     this.cpu = isCPU;
     this.game = game;
     this.token = Crypto.randomBytes(22).toString('hex'); // Generate random lobby code
-
+    this.user = [null, null];
     this.sockets = [null, null];
     this.isWaiting = true;
     this.choosePhase = true;
@@ -71,11 +71,8 @@ module.exports = class Lobby {
             this._process_meld(playerIndex, card);
 
           }
-
           this._check_win();
-
         }
-
       }
 
     }
@@ -149,7 +146,6 @@ module.exports = class Lobby {
    * Destroys and Removes This Lobby
    */
   _doSelfDistruct() {
-    console.log("Removing Lobby", this.code);
     for(let socket of this.sockets) {
       if(socket != null) {
         socket.terminate();
@@ -250,7 +246,32 @@ module.exports = class Lobby {
 
     } else {
 
-      this.sockets[this.sockets.indexOf(null)] = ws; // Add client to lobby via its Websocket
+      if( ws.user && !this.cpu )  {
+        let socketIndex = null;
+        this.sockets.map( (socket,index) => {
+          if( socket && socket.user._id == ws.user._id) {
+            socketIndex = index
+          }
+        } );
+        if( socketIndex || socketIndex == 0) {
+          this.sockets[socketIndex] = ws;
+          this._send(ws, { // Send copy of current deck and layout to new client
+            cmd: 'cards',
+            cards: this.playerCards[socketIndex],
+            opcards: this.playerCards[socketIndex ^ 1].length,
+            deck: this.deck.length,
+            melds: this.melds,
+            draw: this.draw,
+            myturn: this.sockets.indexOf(ws) == this.turn
+          });
+          return;
+        }
+       
+      } 
+        this.sockets[this.sockets.indexOf(null)] = ws; // Add client to lobby via its Websocket
+      
+      
+      // this.sockets[this.sockets.indexOf(null)] = ws; // Add client to lobby via its Websocket
       if (this.sockets.indexOf(null) == -1 || this.cpu) {
         this.isWaiting = false;
       }
