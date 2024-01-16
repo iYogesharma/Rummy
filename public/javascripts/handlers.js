@@ -162,3 +162,8 @@ handle.loss = (data) => { // Handle loss
   $('.card').unbind('click');
   beginLeave();
 }
+
+handle.error = (data) => { // Handle loss
+  alert(data.message)
+  window.location.href = "/";
+}
