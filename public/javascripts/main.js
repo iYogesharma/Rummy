@@ -88,8 +88,8 @@ let createFakeCards = (name, n) => { // Creates fake cards (to mask true identit
 
 let sortDeck = (cards) => { // In-place sorts cards
   cards.sort((a, b) => {
-    if (a.rank != b.rank) {
-       return a.rank - b.rank;
+    if (a.value != b.value) {
+       return a.value - b.value;
     } else {
        return a.suit - b.suit;
     }
