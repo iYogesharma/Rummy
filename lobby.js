@@ -134,7 +134,7 @@ module.exports = class Lobby {
    */
   _sortDeck(deck) {
     deck.sort((a, b) => {
-      if (a.rank != b.rank){
+      if (a.value != b.value){
          return a.value - b.value;
       } else {
          return a.suit - b.suit;
