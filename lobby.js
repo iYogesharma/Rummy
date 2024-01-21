@@ -59,7 +59,7 @@ module.exports = class Lobby {
       } else {
 
         let card = this._getCard(this.playerCards[playerIndex], data);
-
+       
         if (card != null) {
 
           if(data.button == 'left') {
@@ -67,7 +67,6 @@ module.exports = class Lobby {
             this._process_discard(playerIndex, card);
 
           } else {
-
             this._process_meld(playerIndex, card);
 
           }
