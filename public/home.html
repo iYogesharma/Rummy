@@ -27,7 +27,7 @@
 
     <style>
       .sm{
-        width:375px
+        width:340px
       }
       h4{
         color: #fff;
@@ -92,10 +92,10 @@
               <!-- The fetched balance will be displayed here -->
             </div>
             <div id="action-container">
-              <button title="Deposite"  class="btn btn-sm  btn-success"  data-toggle="modal" data-target="#depositeModal">
+              <button title="Deposite"  class="btn btn-sm  btn-success" id="deposite">
                   <i class="glyphicon glyphicon-arrow-down"></i>
               </button>
-              <button  title="Withdraw" class="btn  btn-sm  btn-danger"  data-toggle="modal" data-target="#withdrawalModal">
+              <button  title="Withdraw" class="btn  btn-sm  btn-danger"  id="withdraw" >  <!-- data-toggle="modal" data-target="#withdrawalModal" -->
                 <i class="glyphicon glyphicon-arrow-up"></i>
             </button>
           </div>
@@ -144,24 +144,22 @@
 
 
     <div class="modal fade" id="depositeModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog sm" role="document" style="top:25%">
+      <div class="modal-dialog sm" role="document" style="top:20%">
         <div class="modal-content">
           <div class="modal-header" style="border: none !important ;">
-            <h4 class="modal-title" id="exampleModalLabel">Deposite
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #767d7f;">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <button type="button" class="close qrclosebtn" data-dismiss="modal" aria-label="Close"  style="color: #767d7f;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="exampleModalLabel" style="text-align:center;color:#fff">
+              Deposite
+              
             </h4>
+            <p style="text-align:center;color: #767d7f;padding-top:2%"><small > Scan QR to deposite money</small></p>
           
           </div>
           <div class="modal-body">
-            <p class="amountLabel">Enter Amount:</p>
-            <div class="sats-container">
-              <img src="/content/bitcoin-logo-circle.svg" alt="">
-              <input type="text" placeholder="0" name="deposit-amount" id="amount-input" class="satValue">
-              <span style="color:#767d7f">sats</span>
-            </div>
-            <button type="button" class="btn btn-primary deposite" id="deposite">Deposite</button>
+            <a id="DepositeQrHref" href="{{href}}"><img id="DepositeQrCode" src="{{dataUri}}"></a>
+            <a type="button"   id="DepositeQrHrefAction" class="btn btn-primary deposite" id="deposite">Deposite</a>
           </div>
         </div>
       </div>
@@ -171,23 +169,19 @@
       <div class="modal-dialog sm" role="document" style="top:7%;width:340px">
         <div class="modal-content">
           <div class="modal-header" style="border: none !important ;">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #767d7f;">
+            <button type="button" class="close qrclosebtn" data-dismiss="modal" aria-label="Close" style="color: #767d7f;">
               <span aria-hidden="true">&times;</span>
             </button><br>
-            <h4 class="modal-title" id="exampleModalLabel" style="text-align:center;color:#fff">
+            <h3 class="modal-title" id="exampleModalLabel" style="text-align:center;color:#fff">
               Instant Withdrawal
-            </h4>
+            </h3>  <p style="text-align:center;color: #767d7f;"><small style="text-align:center;color: #767d7f;">Scan this QR to withdraw money</small></p>
+           
           
           </div>
           <div class="modal-body">
-            <a class="qrcode-container" href="lightning:LNURL1DP68GURN8GHJ7MRWVEKXJURZD96XXMMFDCHXSETJDA4H2CTSWQHXXMMD9AKXUATJD3EX2UT4V4EHGAMY8A6HXETJF9JR6VPNVSCXYVMRXUMXGCMPX5ERYERRXCCRZCECXUUNWCECVC6KYEFCX3JRYVRRXVCRXCFN8P3XZCFNVSUK2VNYVFNRVCFJ8P3R2EP5V93X2VPXD3HXVMRFWP6X2MTSDDJHJ0F3D96KZDNNXF3KVAR8XPJ8YMT30Q6RYAP589NK57TD89JX5MN6DVNCZFS3" target="_blank" data-v-043cb838="">
-              <div class="qrerror-container" data-v-043cb838="">
-
-                <canvas class="qrcode" data-v-043cb838="" width="550" height="550" style="width: 300px; height: 300px;">
-                </canvas>
-            </a>
+            <a id="WithdrawQrHref" href="{{href}}"><img id="WithdrawQrCode" src="{{dataUri}}"></a>
             <div class="deposite" style="flex-direction: row;gap:1.5em;">
-              <button type="button" class="btn btn-warning btn-sm" style="width: 100%;">Open In Wallet</button>
+              <a class="btn btn-warning btn-sm"  id="WithdrawQrHrefAction" style="width: 100%;">Open In Wallet</a>
               <button type="button" class="btn btn-primary  btn-sm" style="width: 100%;">Enter Invoice</button>
             </div>
             

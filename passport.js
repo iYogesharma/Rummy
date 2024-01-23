@@ -7,7 +7,7 @@ const { login } = require('./Helpers/auth.helper');
 const LnurlAuth = require('passport-lnurl-auth');
 
 let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) {
-  let user = await User.findOne({lnId :linkingPublicKey, actice: true});
+  let user = await User.findOne({lnId :linkingPublicKey, active: true});
 
   if( !user ) {
     user = await User.create({

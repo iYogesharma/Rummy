@@ -65,3 +65,45 @@ $('#code').on('keyup', () => { // As the user types...
 
 });
 
+$(document).on('click', '#withdraw', function(e){
+  e.preventDefault();
+  $.ajax({
+    type: 'GET',
+    url: '/v1/withdraw',
+    success: function({data}){
+      if( data.href ){
+        $('#WithdrawQrHref').attr('href', data.href);
+        $('#WithdrawQrCode').attr('src', data.dataUri)
+        $('#WithdrawQrHrefAction').attr('href', data.href);
+        $('#withdrawalModal').modal('show')
+      }
+    }
+  })
+})
+
+$(document).on('click', '#deposite', function(e){
+  e.preventDefault();
+  $.ajax({
+    type: 'GET',
+    url: '/v1/deposite',
+    success: function({data}){
+      if( data.href ){
+        $('#DepositeQrHref').attr('href', data.href);
+        $('#DepositeQrCode').attr('src', data.dataUri)
+        $('#DepositeQrHrefAction').attr('href', data.href);
+        $('#depositeModal').modal('show')
+      }
+    }
+  })
+})
+$("#depositeModal").on("hidden.bs.modal", function () {
+  window.location.reload();
+});
+$("#withdrawalModal").on("hidden.bs.modal", function () {
+  window.location.reload();
+});
+$(document).on('click','.qrclosebtn', function(){
+ 
+})
+
+
