@@ -22,44 +22,46 @@
     />
   </head>
   <body>
- 
-<div class="rummy-container">
-  <div class="full-container">
-    <!-- <img src="background.png" alt="Rummy Game" /> -->
-    <div class="frame">
-      <img src="Frame.png" alt="Frame" class="frame-img"/>
-      <h1 class="heading">GIN RUMMY</h1>
-      <div class="login-box">
-        <h1 class="login-heading">Welcome!</h1>
-        <h3 class="login-des">Please Login To Continue</h3>
-        <h4 class="login-subDes">
-          In order to play with your friends please login with your lightning
-          wallet
-        </h4>
-        <div>
-          <a href="http://localhost:8000/login/alby" class="button-link">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">
-              Login
-            </button>
-            <input type="hidden" name="" id="code" />
-          </a>
-        </div>
-        <div class="divider">
-          <span class="smalltext">or</span>
-        </div>
-        <div>
-          <p class="description">Want some practice before real match?</p>
-          <div>
-            <button class="btn btn-danger btn-lg btn-block" id="cpubtn">
-              Play With CPU
-            </button>
+    <div class="rummy-container">
+      <div class="full-container">
+        <!-- <img src="background.png" alt="Rummy Game" /> -->
+        <div class="frame">
+          <img src="Frame.png" alt="Frame" class="frame-img" />
+          <h1 class="heading">GIN RUMMY</h1>
+          <div class="login-box">
+            <h1 class="login-heading">Welcome!</h1>
+            <h3 class="login-des">Please Login To Continue</h3>
+            <h4 class="login-subDes">
+              In order to play with your friends please login with your
+              lightning wallet
+            </h4>
+            <div>
+              <a
+                href="http://localhost:8000/login/lightning"
+                class="button-link"
+              >
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                  Login
+                </button>
+                <input type="hidden" name="" id="code" />
+              </a>
+            </div>
+            <div class="divider">
+              <span class="smalltext">or</span>
+            </div>
+            <div>
+              <p class="description">Want some practice before real match?</p>
+              <div>
+                <button class="btn btn-danger btn-lg btn-block" id="cpubtn">
+                  Play With CPU
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>  
-</div>
-</body>
+  </body>
 </html>
 
 <script src="/javascripts/jquery.min.js"></script>

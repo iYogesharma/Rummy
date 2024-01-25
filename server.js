@@ -1,13 +1,12 @@
-const {wss,server} = require('./app');
+const { wss, server } = require("./app");
 
 const { connection } = require("./Database/connection");
 
 const { PORT, NODE_ENV } = process.env;
 
 // Ignore Socket Errors
-wss.on('error', (err) => console.log('*errored*'));
-wss.on('close', () => console.log('*disconnected*'));
-
+wss.on("error", (err) => console.log("*errored*"));
+wss.on("close", () => console.log("*disconnected*"));
 
 /*-----------------------------------------------------*/
 
@@ -31,4 +30,3 @@ server.listen(PORT || 8000, async (error) => {
     process.exit(1);
   }
 });
-

@@ -9,7 +9,7 @@ body {
   width: 100%;
 }
 .full-container {
-  background-image: url(../background-bg.png);
+  background-image: url(../background.png);
   background-size: cover;
   background-position: center;
   background-position-x: center;
