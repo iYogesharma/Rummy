@@ -1,8 +1,4 @@
-
-const axios = require('axios');
-
 const User = require('../Database/Models/user.model')
-
 const querystring = require('querystring');
 const lnurl = require('lnurl');
 const { generateQrCode, pay, withdraw } = require('../Helpers/qr.helper');
