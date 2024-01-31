@@ -214,7 +214,10 @@ let createEvents = () => {
         // of the list with the received data
         if(event.data){
            let data = JSON.parse(event.data);
-           handle[data.cmd](data)
+           if( data.cmd == 'paymentSuccessfull'){
+              paymentSuccessfull();
+           }
+          
         }
   };
   // If an error occurs, we wait a second
@@ -230,7 +233,7 @@ $(document).ready( function(){
   createEvents();
 })
 
-handle.paymentSuccessfull = (data) => { // Handle getting the status of a lobby
+let paymentSuccessfull = (data) => { // Handle getting the status of a lobby
   $('#successModal').modal({backdrop: 'static', keyboard: false},'show')
 };
 
