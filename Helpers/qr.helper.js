@@ -28,7 +28,7 @@ exports.pay = async (invoice) =>  {
 }
 
 
-exports.withdraw = async (amount) =>  {
+exports.deposite = async (amount) =>  {
     try {
         const {data} = await axios.post('https://api.getalby.com/invoices', {amount, description: "Gin Rummy Wallet Deposite"},{
             headers: {
@@ -42,4 +42,26 @@ exports.withdraw = async (amount) =>  {
         return false
     }
  
+}
+
+
+exports.checkInvoiceStatus= async (invoice) => {
+    try {
+        if(invoice.paymentHash){
+            const {data} = await axios.get(`https://api.getalby.com/invoices/${invoice.paymentHash}`,{
+                headers: {
+                    "Authorization": "Bearer "+ process.env.ALBY_ACCESS_TOKEN
+                }
+            });
+            return data;
+        }  else {
+            return false;
+        }
+       
+
+      
+    } catch ( err ) {
+        console.log(err)
+        return false
+    }
 }

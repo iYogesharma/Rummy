@@ -9,6 +9,8 @@ const helmet = require('helmet');
 const session = require('express-session');
 require("dotenv").config();
 
+const bodyParser = require('body-parser');
+
 
 const server = http.createServer(app);
  
@@ -24,6 +26,7 @@ app.use(session({
 	saveUninitialized: true,
 }));
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(COOKIE_ENCRYPT_SECRET));
 app.use(cookieEncrypter(COOKIE_ENCRYPT_SECRET));
 app.use(helmet())

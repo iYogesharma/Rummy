@@ -83,27 +83,121 @@ $(document).on('click', '#withdraw', function(e){
 
 $(document).on('click', '#deposite', function(e){
   e.preventDefault();
-  $.ajax({
-    type: 'GET',
-    url: '/v1/deposite',
-    success: function({data}){
-      if( data.href ){
-        $('#DepositeQrHref').attr('href', data.href);
-        $('#DepositeQrCode').attr('src', data.dataUri)
-        $('#DepositeQrHrefAction').attr('href', data.href);
-        $('#depositeModal').modal('show')
+  $('#depositeModal').modal({backdrop: 'static', keyboard: false},'show')
+})
+
+var invoice = null;reload = false;
+$(document).on('click', '#DepositeQrHrefAction', function(e){
+  e.preventDefault();
+  const amount =$('#amount-input').val();
+  if( !amount){
+    alert('Please enter amount to be deposited')
+  } else {
+    $.ajax({
+      type: 'GET',
+      url: '/v1/deposite',
+      data:{amount:amount},
+      success: function({data}){
+        if( data.href ){
+          invoice =  data.invoice
+          $('#DepositeQrHref').attr('href', data.href);
+          $('#DepositeQrCode').attr('src', data.dataUri)
+          $('.hide-amount-input').hide();
+          $('#DepositeQrHrefAction').hide()
+          $('#DepositeQrHref').show();
+        }
       }
-    }
-  })
+    })
+  }
+
+})
+
+$(document).on('click', '#DepositeQrHref', function(e){
+  reload = true;
+})
+
+$(document).on('click', '#manualInvoice', function(e){
+  $('#manualInputDiv').show()
 })
 $("#depositeModal").on("hidden.bs.modal", function () {
-  window.location.reload();
+  if(invoice){
+    $.ajax({
+      type: 'POST',
+      url: '/v1/invoiceUpdates',
+      data:{pr:invoice},
+      success: function(data){
+        
+        if(data.setteled) {
+          $('#successModal').modal({backdrop: 'static', keyboard: false},'show')
+        }
+        if(reload) {
+          window.location.reload();
+        }
+      } ,
+      error : function(err) {
+        console.log(err) 
+        if(reload) {
+          window.location.reload();
+        }
+        // $('#errorModal').modal('show')
+        // $('#failureMessage').html(err.message)
+      }
+    })
+  }
+  
+ 
 });
 $("#withdrawalModal").on("hidden.bs.modal", function () {
   window.location.reload();
 });
-$(document).on('click','.qrclosebtn', function(){
- 
-})
+
+$(document).on("click", "#successContinue",function (e) {
+  window.location.reload();
+});
+
+
+
+
+/**
+ * @event scannerDetection
+ * Scanner detection script
+ **/
+$(document).scannerDetection({
+  timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+  avgTimeByChar: 100, // it's not a barcode if a character takes longer than 100ms
+  onComplete: function(barcode, qty){
+    if(barcode == "okqlty"){
+     alert('here')
+    }else if(barcode == "reject"){
+      alert('here')
+    }
+  }
+});
+
+
+$(document).on('click', '#WithdrawInvoice', function(){
+  const invoice = $('#customInvoice').val();
+  if( invoice ) {
+    $.ajax({
+      type: 'POST',
+      url: '/v1/withdrawInvoice',
+      data:{invoice:invoice},
+      success: function(data){
+        if(data.setteled) {
+          $('#withdrawalModal').modal('hide')
+          $('#successModal').modal({backdrop: 'static', keyboard: false},'show')
+        }
+      } ,
+      error : function(err) {
+        // console.log(err) 
+        $('#withdrawalModal').modal('hide')
+        $('#errorModal').modal('show')
+        $('#failureMessage').html(err.message)
+      }
+    })
+  } else {
+    alert('Please Add Invoice First');
+  }
+}) 
 
 

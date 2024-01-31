@@ -13,11 +13,19 @@ router
 
     .get('/v1/withdraw', Auth, PaymentController.withdrawAmmount)
 
-    .get('/v1/deposite', Auth, PaymentController.depositeAmount)
+    .get('/v1/deposite', Auth, PaymentController.generateDepositeInvoice)
+
+    .post('/v1/invoiceUpdates', Auth, PaymentController.invoiceUpdates)
+
+    .post('/v1/invoiceUpdates', Auth, PaymentController.invoiceUpdates)
+
+    .post('/v1/withdrawInvoice', Auth, PaymentController.withdrawInvoice)
 
     .get('/lightning/deposite', Auth, PaymentController.depositeRequest)
 
     .get('/lightning/withdraw', Auth, PaymentController.withdrawRequest)
+
+  
 
 
 module.exports = router;
