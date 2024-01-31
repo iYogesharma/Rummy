@@ -355,7 +355,7 @@ exports.invoiceUpdates = async (req,res) => {
 exports.webhookInvoiceUpdates = async (req,res) => {
     console.log(req.body);
 
-    if(request.body.settled) {
+    if(req.body.settled) {
         let invoice = await  Invoice.findOne({
             amount:amount, 
             paymentHash: req.body.payment_hash,
