@@ -363,7 +363,7 @@ exports.webhookInvoiceUpdates = async (req,res) => {
         });
 
         if( invoice ) {
-            global.clients[req.sessionID]?.write(`data: ${JSON.stringify({ cmd: 'InvoiceReceived', status:'Invoice received'})}\n\n`);
+            global.clients[invoice.user_id]?.write(`data: ${JSON.stringify({ cmd: 'InvoiceReceived', status:'Invoice received'})}\n\n`);
             await Invoice.findOneAndUpdate({_id:invoice._id},{setteled:true});
             await User.findOneAndUpdate(
                 { _id: invoice.user_id },
@@ -377,7 +377,7 @@ exports.webhookInvoiceUpdates = async (req,res) => {
                 status:'payment deposite successfull'
             }
 
-            global.clients[req.sessionID]?.write(`data: ${JSON.stringify(response)}\n\n`);
+            global.clients[invoice.user_id]?.write(`data: ${JSON.stringify(response)}\n\n`);
            
         }
     }

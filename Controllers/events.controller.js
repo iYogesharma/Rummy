@@ -12,7 +12,7 @@ exports.registerEventClient = (req,res) => {
     // Write successful response status 200 in the header
     res.writeHead(200, headers);
 
-    global.clients[req.sessionID] = res;
+    global.clients[req.user._id] = res;
 
     let counter = 0;
     res.write(`data: ${JSON.stringify({id:counter, date:new Date().toLocaleString(), event:'connected'})}\n`);
@@ -25,10 +25,10 @@ exports.registerEventClient = (req,res) => {
         counter += 1;
     }, 5000);
 
-    console.log(`${req.sessionID} - Connection opened`);
+    console.log(`${req.user._id} - Connection opened`);
 
     req.on('close', () => {
-        console.log(`${req.sessionID} - Connection closed`);
-        global.clients = Object.keys(global.clients).filter( client => client !== req.sessionID);
+        console.log(`${req.user._id} - Connection closed`);
+        global.clients = Object.keys(global.clients).filter( client => client !== req.user._id);
     });
 }
