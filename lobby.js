@@ -268,7 +268,6 @@ module.exports = class Lobby {
        
       } 
         this.sockets[this.sockets.indexOf(null)] = ws; // Add client to lobby via its Websocket
-        if(ws.user._id)  global.clients[ws.user._id] = ws.user._id;
        
       
       // this.sockets[this.sockets.indexOf(null)] = ws; // Add client to lobby via its Websocket
