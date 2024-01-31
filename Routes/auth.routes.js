@@ -4,6 +4,7 @@ const passport = require('passport')
 
 const AuthController = require('../Controllers/auth.controller');
 
+const EventsControler = require('../Controllers/events.controller');
 const {Auth,RedirectIfAuthenticated} = require('../Middlewares/auth.middleware');
 const { LnAuth } = require("../passport");
 
@@ -42,5 +43,6 @@ router
         res.sendFile(global.appRoot + '/public/home.html');
     })
 
+    .get('/events',Auth, EventsControler.registerEventClient)
 
 module.exports = router;
