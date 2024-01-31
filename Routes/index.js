@@ -10,13 +10,14 @@ const {app} = require("../app");
 
 function appRouter() {
 
+    app.use('/events', EventsControler.registerEventClient);
+    
     app.use('/game', gameRouter);
 
     app.use('/', authRouter);
 
     app.use('/', paymentRouter);
 
-    app.use('/events', EventsControler.registerEventClient);
 }
 
 module.exports = appRouter;
