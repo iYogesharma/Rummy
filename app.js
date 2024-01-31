@@ -35,6 +35,7 @@ app.use(passport.session());
 app.use(passport.authenticate('lnurl-auth'));
 
 global.appRoot = __dirname;
+global.clients = {}
 
 // Serve Static Files/Assets
 app.use(express.static('public'));

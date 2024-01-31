@@ -19,7 +19,6 @@ socket.onopen = (event) => {
 socket.onmessage = (message) => {
 
   let data = JSON.parse(message.data);
-  console.log(data);
   if (data.cmd in handle) { // Choose and Execute Appropriate Handler
     handle[data.cmd](data);
   }

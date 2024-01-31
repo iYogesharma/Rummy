@@ -2,8 +2,8 @@ const User = require('../Database/Models/user.model')
 const querystring = require('querystring');
 const lnurl = require('lnurl');
 const { generateQrCode, pay, deposite, checkInvoiceStatus } = require('../Helpers/qr.helper');
-const { generatePaymentRequest } = require('lightning-backends');
 const Invoice = require('../Database/Models/invoice.model');
+
 
 exports.accountBalance = async ( req,res ) => {
 
@@ -146,7 +146,6 @@ exports.withdrawAmmount = async ( req,res ) => {
 
     else return res.status(500).json({'success': 'false', 'message': 'something went wrong try again'})
 }
-
 
 exports.withdrawRequest = async ( req,res ) => {
     const k1 = req.user.lnId;
@@ -353,4 +352,34 @@ exports.invoiceUpdates = async (req,res) => {
     }
 }
 
+exports.webhookInvoiceUpdates = async (req,res) => {
+    console.log(req.body);
+
+    if(request.body.settled) {
+        let invoice = await  Invoice.findOne({
+            amount:amount, 
+            paymentHash: req.body.payment_hash,
+            paymentRequest: req.body.payment_request,
+            setteled:false,
+            type: 'Deposite'
+        });
+
+        if( invoice ) {
+            await Invoice.findOneAndUpdate({_id:invoice._id},{setteled:true});
+            await User.findOneAndUpdate(
+                { _id: invoice.user_id },
+                {
+                    $inc: { balance: invoice.amount}
+                }
+            );  
+
+            const response = {
+                cmd: 'paymentSuccessfull',
+                status:'payment deposite successfull'
+            }
+
+            global.clients[req.sessionID].write(`data: ${JSON.stringify(response)}\n\n`);
+        }
+    }
+}
 

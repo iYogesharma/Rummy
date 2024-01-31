@@ -1,6 +1,6 @@
 
 const { decodeToken } = require('../Helpers/auth.helper');
-const {wss,server} = require('../app');
+const {wss} = require('../app');
 
 const Game = require('../game');
 

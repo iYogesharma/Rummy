@@ -200,4 +200,39 @@ $(document).on('click', '#WithdrawInvoice', function(){
   }
 }) 
 
+var events;
+let createEvents = () => {
+  // Close connection if open
+  if(events){
+    events.close();
+  }
+  // Establishing an SSE connection
+  events = new EventSource('/events');
+  events.onmessage = (event) => {
+    console.log(event)
+        // If the component is mounted, we set the state
+        // of the list with the received data
+        if(event.data){
+           let data = JSON.parse(event.data);
+           handle[data.cmd](data)
+        }
+  };
+  // If an error occurs, we wait a second
+  // and call the connection function again
+  events.onerror = (err) => {
+        timer = setTimeout(() => {
+           createEvents();
+        }, 1000);
+  };
+};
+
+$(document).ready( function(){
+  createEvents();
+})
+
+handle.paymentSuccessfull = (data) => { // Handle getting the status of a lobby
+  $('#successModal').modal({backdrop: 'static', keyboard: false},'show')
+};
+
+
 

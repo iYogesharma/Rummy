@@ -14,6 +14,7 @@ module.exports = class Game {
     this.lobbys = {};
    
     wss.on('connection', (ws, req) => {
+      
       ws.user = this._user(req);
     
       this._send(ws, {

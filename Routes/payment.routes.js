@@ -17,13 +17,13 @@ router
 
     .post('/v1/invoiceUpdates', Auth, PaymentController.invoiceUpdates)
 
-    .post('/v1/invoiceUpdates', Auth, PaymentController.invoiceUpdates)
-
     .post('/v1/withdrawInvoice', Auth, PaymentController.withdrawInvoice)
 
     .get('/lightning/deposite', Auth, PaymentController.depositeRequest)
 
     .get('/lightning/withdraw', Auth, PaymentController.withdrawRequest)
+
+     .get('/webhook/invoiceUpdates', Auth, PaymentController.depositeRequest);
 
   
 
