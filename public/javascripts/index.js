@@ -238,4 +238,9 @@ let paymentSuccessfull = (data) => { // Handle getting the status of a lobby
 };
 
 
+handle.paymentSuccessfull = (data) => { // Handle getting the status of a lobby
+  $('#successModal').modal({backdrop: 'static', keyboard: false},'show')
+};
+
+
 

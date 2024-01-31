@@ -353,7 +353,6 @@ exports.invoiceUpdates = async (req,res) => {
 }
 
 exports.webhookInvoiceUpdates = async (req,res) => {
-    console.log(req.body);
 
     if(req.body.settled) {
         let invoice = await  Invoice.findOne({
@@ -378,7 +377,13 @@ exports.webhookInvoiceUpdates = async (req,res) => {
                 status:'payment deposite successfull'
             }
 
-            global.clients[req.sessionID].write(`data: ${JSON.stringify(response)}\n\n`);
+            if(  global.clients[req.sessionID] ) {
+                global.clients[req.sessionID].write(`data: ${JSON.stringify(response)}\n\n`);
+            }
+            if ( global.clients[ws.user._id]) {
+                global.clients[ws.user._id].send(JSON.stringify(response));
+            }
+           
         }
     }
 }
