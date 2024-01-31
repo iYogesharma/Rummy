@@ -11,7 +11,7 @@ exports.registerEventClient = (req,res) => {
     // Write successful response status 200 in the header
     res.writeHead(200, headers);
 
-    // res.write(`data: ${JSON.stringify({num: 1})}\n\n`);
+    res.write(`data: ${JSON.stringify({num: 1})}\n\n`);
 
     global.clients[req.sessionID] = res;
 

@@ -23,7 +23,7 @@ router
 
     .get('/lightning/withdraw', Auth, PaymentController.withdrawRequest)
 
-     .get('/webhook/invoiceUpdates', Auth, PaymentController.depositeRequest);
+     .get('/webhook/invoiceUpdates', Auth, PaymentController.webhookInvoiceUpdates);
 
   
 
