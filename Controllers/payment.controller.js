@@ -380,8 +380,8 @@ exports.webhookInvoiceUpdates = async (req,res) => {
             if(  global.clients[req.sessionID] ) {
                 global.clients[req.sessionID].write(`data: ${JSON.stringify(response)}\n\n`);
             }
-            if ( global.clients[ws.user._id]) {
-                global.clients[ws.user._id].send(JSON.stringify(response));
+            if ( global.clients[ invoice.user_id]) {
+                global.clients[ invoice.user_id].send(JSON.stringify(response));
             }
            
         }
