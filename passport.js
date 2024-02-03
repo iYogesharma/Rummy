@@ -12,7 +12,7 @@ let strategy  =  new LnurlAuth.Strategy( async function(linkingPublicKey, done) 
   if( !user ) {
     user = await User.create({
       lnId: linkingPublicKey,
-      balance: 1000
+      balance: 0
     });
   }
 

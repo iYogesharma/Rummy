@@ -189,10 +189,9 @@ $(document).on('click', '#WithdrawInvoice', function(){
         }
       } ,
       error : function(err) {
-        // console.log(err) 
-        $('#withdrawalModal').modal('hide')
+        // $('#withdrawalModal').modal('hide')
         $('#errorModal').modal('show')
-        $('#failureMessage').html(err.message)
+        $('#failureMessage').html(err.responseJSON.message)
       }
     })
   } else {

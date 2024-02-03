@@ -4,6 +4,7 @@ const lnurl = require('lnurl');
 const { generateQrCode, pay, deposite, checkInvoiceStatus } = require('../Helpers/qr.helper');
 const Invoice = require('../Database/Models/invoice.model');
 
+const bolt11 = require('bolt11');
 
 exports.accountBalance = async ( req,res ) => {
 
@@ -93,27 +94,38 @@ checkForInvoiceStatusUpdates = async (id,invoices)  => {
 
 exports.withdrawInvoice = async ( req,res ) => {
     const invoice = req.body.invoice;
+
     if( invoice ) {
-        pay(invoice).then( async (data) => {
-            console.log(data);
-            await Invoice.create({
-                user_id: req.user._id,
-                amount: data.amount,
-                paymentHash: data.payment_hash,
-                paymentRequest: data.payment_request,
-                setteled: true,
-                type: 'Withdraw'
-            });
-            await User.findOneAndUpdate(
-                { _id: req.user._id },
-                {
-                    $inc: { balance: `-${data.amount}`}
-                }
-            );
-            return res.status(200).json({success:true, message:"withdrawal successfull",setteled:true})
-        }).catch( err => {
-            return res.status(500).json({success:false, message:"Error while processing withdrawal",setteled:false})
-        })
+
+        const user = await User.findById( req.user._id, {balance:true} );
+
+        const lightningInvoice = bolt11.decode(invoice);
+
+        if( user.balance < lightningInvoice.satoshis) {
+            return res.status(400).json({success:false, message:`You can only withdraw upto ${user.balance} sats`,setteled:false})
+        } else {
+            pay(invoice).then( async (data) => {
+                console.log(data);
+                await Invoice.create({
+                    user_id: req.user._id,
+                    amount: data.amount,
+                    paymentHash: data.payment_hash,
+                    paymentRequest: data.payment_request,
+                    setteled: true,
+                    type: 'Withdraw'
+                });
+                await User.findOneAndUpdate(
+                    { _id: req.user._id },
+                    {
+                        $inc: { balance: `-${data.amount}`}
+                    }
+                );
+                return res.status(200).json({success:true, message:"withdrawal successfull",setteled:true})
+            }).catch( err => {
+                return res.status(500).json({success:false, message:"Error while processing withdrawal",setteled:false})
+            })
+        }
+       
     } else {
         return res.status(400).json({success:false, message:"Invoice field is reuired",setteled:false})
     }
@@ -122,6 +134,7 @@ exports.withdrawInvoice = async ( req,res ) => {
 exports.withdrawAmmount = async ( req,res ) => {
 
     const k1 = req.user.lnId;
+   
 
     const callbackUrl = process.env.APP_URL+'/lightning/withdraw?' + querystring.stringify({
         tag: 'withdrawRequest',
@@ -148,31 +161,40 @@ exports.withdrawAmmount = async ( req,res ) => {
 }
 
 exports.withdrawRequest = async ( req,res ) => {
+    const user = await User.findById( req.user._id, {balance:true} );
     const k1 = req.user.lnId;
     const id = req.user._id;
     if( k1 && req.query.pr ){
-        pay(req.query.pr).then( async (data) => {
-            await User.findOneAndUpdate(
-                { _id: id },
-                {
-                    $inc: { balance: `-${data.amount}`}
-                }
-            );
-            return res.status(200).json({"status": "OK"})
-        }).catch( err => {
-            return res.status(200).json({"status":"Error", "reason":"Error while processing withdrawal"})
-        })
+        const lightningInvoice = bolt11.decode(req.query.pr);
+
+        if( user.balance < lightningInvoice.satoshis) {
+            return res.status(200).json({"status":"Error", "reason":`You can only withdraw upto ${user.balance} sats`})
+        } else {
+            pay(req.query.pr).then( async (data) => {
+                await User.findOneAndUpdate(
+                    { _id: id },
+                    {
+                        $inc: { balance: `-${data.amount}`}
+                    }
+                );
+                return res.status(200).json({"status": "OK"})
+            }).catch( err => {
+                return res.status(200).json({"status":"Error", "reason":"Error while processing withdrawal"})
+            })
+        }
     }
     else if(k1 ){
-
-        return res.status(200).json({
-            k1:k1,
-            tag: 'withdrawRequest',
-            defaultDescription: "GinRummy Wallet Withdrawal",
-            minWithdrawable:0,
-            maxWithdrawable: 10,
-            callback: process.env.APP_URL+'/lightning/withdraw'
-        });
+        if(user ) {
+            return res.status(200).json({
+                k1:k1,
+                tag: 'withdrawRequest',
+                defaultDescription: "GinRummy Wallet Withdrawal",
+                minWithdrawable:0,
+                maxWithdrawable:user.balance,
+                callback: process.env.APP_URL+'/lightning/withdraw'
+            });
+        }
+        
     }
 }
 

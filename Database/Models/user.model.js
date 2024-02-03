@@ -13,7 +13,7 @@ const userSchema = new Schema({
   // tokenExpiry: { type: Date, default: null},
   // lightningAddress: { type: String, default: null},
   lnId:{ type: String, unique: true },
-  balance: { type: Number, default: 1000},
+  balance: { type: Number, default: 0},
   active: {type: Boolean,default: true},
   created_at: { type: Date},
   updated_at: { type: Date, default: null },

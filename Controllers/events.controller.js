@@ -25,10 +25,10 @@ exports.registerEventClient = (req,res) => {
         counter += 1;
     }, 5000);
 
-    console.log(`${req.user._id} - Connection opened`);
+    // console.log(`${req.user._id} - Connection opened`);
 
     req.on('close', () => {
-        console.log(`${req.user._id} - Connection closed`);
+        // console.log(`${req.user._id} - Connection closed`);
         global.clients = Object.keys(global.clients).filter( client => client !== req.user._id);
     });
 }
