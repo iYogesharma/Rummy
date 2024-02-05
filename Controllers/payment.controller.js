@@ -133,7 +133,7 @@ exports.withdrawInvoice = async ( req,res ) => {
 exports.withdrawAmmount = async ( req,res ) => {
 
     const k1 = req.user.lnId;
-   
+
     const callbackUrl = process.env.APP_URL+'/lightning/withdraw?' + querystring.stringify({
         tag: 'withdrawRequest',
         defaultDescription: "GinRummy Wallet Withdrawal",
@@ -174,7 +174,7 @@ exports.withdrawRequest = async ( req,res ) => {
                     amount: data.amount,
                     paymentHash: data.payment_hash,
                     paymentRequest: data.payment_request,
-                    setteled: true,
+                    setteled: false,
                     type: 'Withdraw'
                 });
                 await User.findOneAndUpdate(
@@ -308,7 +308,7 @@ exports.depositeRequest = async ( req,res ) => {
                 paymentHash: data.payment_hash,
                 paymentRequest: data.payment_request,
                 expires_at: data.expires_at,
-                setteled: true,
+                setteled: false,
                 type: 'Deposite'
             });
         
@@ -388,7 +388,7 @@ exports.webhookInvoiceUpdates = async (req,res) => {
             paymentRequest: req.body.payment_request,
             setteled:false
         });
-console.log(invoice)
+
         if( invoice ) {
             global.clients[invoice.user_id]?.write(`data: ${JSON.stringify({ cmd: 'InvoiceReceived', status:'Invoice received', type:invoice.type})}\n\n`);
             await Invoice.findOneAndUpdate({_id:invoice._id},{setteled:true});

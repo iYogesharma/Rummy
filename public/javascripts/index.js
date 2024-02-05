@@ -147,13 +147,13 @@ $("#depositeModal").on("hidden.bs.modal", function () {
   
  
 });
-$("#withdrawalModal").on("hidden.bs.modal", function () {
-  window.location.reload();
-});
+// $("#withdrawalModal").on("hidden.bs.modal", function () {
+//   window.location.reload();
+// });
 
-$(document).on("click", "#successContinue",function (e) {
-  window.location.reload();
-});
+// $(document).on("click", "#successContinue",function (e) {
+//   window.location.reload();
+// });
 
 
 
@@ -233,12 +233,13 @@ $(document).ready( function(){
 })
 
 let paymentSuccessfull = (data) => { // Handle getting the status of a lobby
+  $('#successMessage').html(data.status);
   $('#successModal').modal({backdrop: 'static', keyboard: false},'show')
 };
 
 
 handle.paymentSuccessfull = (data) => { // Handle getting the status of a lobby
-  $('#successModal').modal({backdrop: 'static', keyboard: false},'show')
+  paymentSuccessfull(data)
 };
 
 
