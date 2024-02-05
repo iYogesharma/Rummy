@@ -36,7 +36,6 @@ exports.accountBalance = async ( req,res ) => {
     }
 }
 
-
 checkForInvoiceStatusUpdates = async (id,invoices)  => {
    
     let failedids = [];let successids = []; let increment = 0; let decrement = 0;
@@ -135,7 +134,6 @@ exports.withdrawAmmount = async ( req,res ) => {
 
     const k1 = req.user.lnId;
    
-
     const callbackUrl = process.env.APP_URL+'/lightning/withdraw?' + querystring.stringify({
         tag: 'withdrawRequest',
         defaultDescription: "GinRummy Wallet Withdrawal",
@@ -177,7 +175,7 @@ exports.withdrawRequest = async ( req,res ) => {
                         $inc: { balance: `-${data.amount}`}
                     }
                 );
-                return res.status(200).json({"status": "OK"})
+                return res.status(200).json({"status": "OK", "reason":"Amount Withdrawal Successfull"})
             }).catch( err => {
                 return res.status(200).json({"status":"Error", "reason":"Error while processing withdrawal"})
             })
@@ -269,7 +267,7 @@ exports.generateDepositeInvoice = async ( req,res ) => {
                 maxSendable: 10,
                 successAction: {
                     "tag": "message",
-                    "message": "LiWithdrawal Request successfull" // Up to 144 characters
+                    "message": "Withdrawal Request successfull" // Up to 144 characters
                 }
             });
             const encoded = lnurl.encode(callbackUrl).toUpperCase();
@@ -380,23 +378,22 @@ exports.webhookInvoiceUpdates = async (req,res) => {
             amount:req.body.amount, 
             paymentHash: req.body.payment_hash,
             paymentRequest: req.body.payment_request,
-            setteled:false,
-            type: 'Deposite'
+            setteled:false
         });
 
         if( invoice ) {
-            global.clients[invoice.user_id]?.write(`data: ${JSON.stringify({ cmd: 'InvoiceReceived', status:'Invoice received'})}\n\n`);
+            global.clients[invoice.user_id]?.write(`data: ${JSON.stringify({ cmd: 'InvoiceReceived', status:'Invoice received', type:invoice.type})}\n\n`);
             await Invoice.findOneAndUpdate({_id:invoice._id},{setteled:true});
             await User.findOneAndUpdate(
                 { _id: invoice.user_id },
                 {
-                    $inc: { balance: invoice.amount}
+                    $inc: { balance: invoice.type != 'Deposite' ? - invoice.amount : invoice.amount}
                 }
             );  
 
             const response = {
                 cmd: 'paymentSuccessfull',
-                status:'payment deposite successfull'
+                status:`Payment ${invoice.type} Successfull`
             }
 
             global.clients[invoice.user_id]?.write(`data: ${JSON.stringify(response)}\n\n`);
