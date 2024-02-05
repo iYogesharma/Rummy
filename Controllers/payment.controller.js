@@ -169,6 +169,14 @@ exports.withdrawRequest = async ( req,res ) => {
             return res.status(200).json({"status":"Error", "reason":`You can only withdraw upto ${user.balance} sats`})
         } else {
             pay(req.query.pr).then( async (data) => {
+                await Invoice.create({
+                    user_id: req.user._id,
+                    amount: data.amount,
+                    paymentHash: data.payment_hash,
+                    paymentRequest: data.payment_request,
+                    setteled: true,
+                    type: 'Withdraw'
+                });
                 await User.findOneAndUpdate(
                     { _id: id },
                     {
@@ -380,14 +388,14 @@ exports.webhookInvoiceUpdates = async (req,res) => {
             paymentRequest: req.body.payment_request,
             setteled:false
         });
-
+console.log(invoice)
         if( invoice ) {
             global.clients[invoice.user_id]?.write(`data: ${JSON.stringify({ cmd: 'InvoiceReceived', status:'Invoice received', type:invoice.type})}\n\n`);
             await Invoice.findOneAndUpdate({_id:invoice._id},{setteled:true});
             await User.findOneAndUpdate(
                 { _id: invoice.user_id },
                 {
-                    $inc: { balance: invoice.type != 'Deposite' ? - invoice.amount : invoice.amount}
+                    $inc: { balance: invoice.type != 'Deposite' ? `-${invoice.amount}` : invoice.amount}
                 }
             );  
 
