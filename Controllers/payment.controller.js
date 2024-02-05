@@ -175,7 +175,7 @@ exports.withdrawRequest = async ( req,res ) => {
                     paymentHash: data.payment_hash,
                     paymentRequest: data.payment_request,
                     setteled: false,
-                    type: 'Withdraw'
+                    type: 'Withdrawal'
                 });
                 await User.findOneAndUpdate(
                     { _id: id },
