@@ -151,9 +151,9 @@ $("#depositeModal").on("hidden.bs.modal", function () {
 //   window.location.reload();
 // });
 
-// $(document).on("click", "#successContinue",function (e) {
-//   window.location.reload();
-// });
+$(document).on("click", "#successContinue",function (e) {
+  window.location.reload();
+});
 
 
 
@@ -214,7 +214,7 @@ let createEvents = () => {
         if(event.data){
            let data = JSON.parse(event.data);
            if( data.cmd == 'paymentSuccessfull'){
-              paymentSuccessfull();
+              paymentSuccessfull(data);
            }
           
         }
