@@ -28,9 +28,9 @@ exports.pay = async (invoice) =>  {
 }
 
 
-exports.deposite = async (amount) =>  {
+exports.deposit = async (amount) =>  {
     try {
-        const {data} = await axios.post('https://api.getalby.com/invoices', {amount, description: "Gin Rummy Wallet Deposite"},{
+        const {data} = await axios.post('https://api.getalby.com/invoices', {amount, description: "Gin Rummy Wallet deposit"},{
             headers: {
                 "Authorization": "Bearer "+ process.env.ALBY_ACCESS_TOKEN
             }

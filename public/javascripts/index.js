@@ -81,30 +81,30 @@ $(document).on('click', '#withdraw', function(e){
   })
 })
 
-$(document).on('click', '#deposite', function(e){
+$(document).on('click', '#deposit', function(e){
   e.preventDefault();
-  $('#depositeModal').modal({backdrop: 'static', keyboard: false},'show')
+  $('#depositModal').modal({backdrop: 'static', keyboard: false},'show')
 })
 
 var invoice = null;reload = false;
-$(document).on('click', '#DepositeQrHrefAction', function(e){
+$(document).on('click', '#depositQrHrefAction', function(e){
   e.preventDefault();
   const amount =$('#amount-input').val();
   if( !amount){
-    alert('Please enter amount to be deposited')
+    alert('Please enter amount to be depositd')
   } else {
     $.ajax({
       type: 'GET',
-      url: '/v1/deposite',
+      url: '/v1/deposit',
       data:{amount:amount},
       success: function({data}){
         if( data.href ){
           invoice =  data.invoice
-          $('#DepositeQrHref').attr('href', data.href);
-          $('#DepositeQrCode').attr('src', data.dataUri)
+          $('#depositQrHref').attr('href', data.href);
+          $('#depositQrCode').attr('src', data.dataUri)
           $('.hide-amount-input').hide();
-          $('#DepositeQrHrefAction').hide()
-          $('#DepositeQrHref').show();
+          $('#depositQrHrefAction').hide()
+          $('#depositQrHref').show();
         }
       }
     })
@@ -112,14 +112,14 @@ $(document).on('click', '#DepositeQrHrefAction', function(e){
 
 })
 
-$(document).on('click', '#DepositeQrHref', function(e){
+$(document).on('click', '#depositQrHref', function(e){
   reload = true;
 })
 
 $(document).on('click', '#manualInvoice', function(e){
   $('#manualInputDiv').show()
 })
-$("#depositeModal").on("hidden.bs.modal", function () {
+$("#depositModal").on("hidden.bs.modal", function () {
   if(invoice){
     $.ajax({
       type: 'POST',

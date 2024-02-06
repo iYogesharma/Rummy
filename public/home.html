@@ -61,7 +61,7 @@
       .modal-content{
         background: #172842;
       }
-     .deposite-button{ 
+     .deposit-button{ 
         margin-top: 20px;
         display: flex;
         flex-direction: column;
@@ -92,7 +92,7 @@
               <!-- The fetched balance will be displayed here -->
             </div>
             <div id="action-container">
-              <button title="Deposite"  class="btn btn-sm  btn-success" id="deposite">
+              <button title="deposit"  class="btn btn-sm  btn-success" id="deposit">
                   <i class="glyphicon glyphicon-arrow-down"></i>
               </button>
               <button  title="Withdraw" class="btn  btn-sm  btn-danger"  id="withdraw" >  <!-- data-toggle="modal" data-target="#withdrawalModal" -->
@@ -143,7 +143,7 @@
     </div>
 
 
-    <div class="modal fade" id="depositeModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="depositModal" tabindex="-1" role="dialog">
       <div class="modal-dialog sm" role="document" style="top:20%">
         <div class="modal-content">
           <div class="modal-header" style="border: none !important ;">
@@ -151,10 +151,10 @@
               <span aria-hidden="true">&times;</span>
             </button>
             <h4 class="modal-title" id="exampleModalLabel" style="text-align:center;color:#fff">
-              Deposite
+              Deposit
               
             </h4>
-            <p style="text-align:center;color: #767d7f;padding-top:2%"><small > Scan QR to deposite money</small></p>
+            <p style="text-align:center;color: #767d7f;padding-top:2%"><small > Scan QR to deposit money</small></p>
           
           </div>
           <div style="padding-left:5%;padding-right:5%;">
@@ -167,9 +167,9 @@
           </div>
          
           
-          <a id="DepositeQrHref" href="{{href}}" style="display: none;"><img id="DepositeQrCode" src="{{dataUri}}"></a>
+          <a id="depositQrHref" href="{{href}}" style="display: none;"><img id="depositQrCode" src="{{dataUri}}"></a>
           <div class="modal-body">
-            <a type="button"   id="DepositeQrHrefAction" class="btn btn-primary deposite-button" id="deposite">Deposite</a>
+            <a type="button"   id="depositQrHrefAction" class="btn btn-primary deposit-button" id="deposit">deposit</a>
           </div>
         </div>
       </div>
@@ -190,14 +190,14 @@
           </div>
           <div class="modal-body">
             <a id="WithdrawQrHref" href="{{href}}"><img id="WithdrawQrCode" src="{{dataUri}}"></a>
-            <div class="deposite" style="display:flex; flex-direction: row;gap:1.5em; margin-top: 5%;">
+            <div class="deposit" style="display:flex; flex-direction: row;gap:1.5em; margin-top: 5%;">
               <a class="btn btn-warning btn-sm"  id="WithdrawQrHrefAction" style="width: 100%">Open In Wallet</a>
               <button type="button" class="btn btn-primary  btn-sm" style="width: 100%;" id="manualInvoice">Enter Invoice</button>
             </div>
           </div>
           <div class="modal-body" id="manualInputDiv" style="display:none"> 
             <textarea name="invoice" id="customInvoice"  rows="3" placeholder="Enter Invoice Here"  style="width:100%"></textarea>
-            <div class="deposite" style="display:flex; flex-direction: row;gap:1.5em; margin-top: 5%;">
+            <div class="deposit" style="display:flex; flex-direction: row;gap:1.5em; margin-top: 5%;">
               <button type="button" class="btn btn-warning  btn-sm" style="width: 100%;" id="WithdrawInvoice">Withdraw</button>
             </div>
           </div>
@@ -218,9 +218,9 @@
           </div>
           <div class="modal-body">
             <img src="/Green-Round-Tick.png" style="width:30%">
-            <p style="text-align:center;color: #767d7f;padding-top:10%"><small style="text-align:center;color: #767d7f;" id="successMessage">Deposite Successfull</small></p>
-            <div class="deposite" style="flex-direction: row;gap:1.5em;">
-              <button type="button" class="btn btn-warning  btn-sm deposite-button " id="successContinue"  style="width: 100%;">Continue</button>
+            <p style="text-align:center;color: #767d7f;padding-top:10%"><small style="text-align:center;color: #767d7f;" id="successMessage">deposit Successfull</small></p>
+            <div class="deposit" style="flex-direction: row;gap:1.5em;">
+              <button type="button" class="btn btn-warning  btn-sm deposit-button " id="successContinue"  style="width: 100%;">Continue</button>
             </div>
           </div>
         </div>
@@ -237,9 +237,9 @@
           </div>
           <div class="modal-body">
             <img src="/error.png" style="width:30%">
-            <p  id="failureMessage" style="text-align:center;color: #767d7f;"><small style="text-align:center;color: #767d7f;">Deposite Failed </small></p>
-            <div class="deposite" style="flex-direction: row;gap:1.5em;">
-              <button type="button" class="btn btn-danger  btn-sm deposite-button " data-dismiss="modal" style="width: 100%;">Try Again</button>
+            <p  id="failureMessage" style="text-align:center;color: #767d7f;"><small style="text-align:center;color: #767d7f;">deposit Failed </small></p>
+            <div class="deposit" style="flex-direction: row;gap:1.5em;">
+              <button type="button" class="btn btn-danger  btn-sm deposit-button " data-dismiss="modal" style="width: 100%;">Try Again</button>
             </div>
           </div>
         </div>

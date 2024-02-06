@@ -1,4 +1,5 @@
 
+const User = require('../Database/Models/user.model');
 const { decodeToken } = require('../Helpers/auth.helper');
 const {wss} = require('../app');
 
@@ -29,7 +30,7 @@ exports.joinCpuLobby = (req, res) => {
     }
 }
 
-exports.showGameScreen = (req, res) => {
+exports.showGameScreen = async (req, res) => {
     let code = "" + req.params.lobby,
     token = req.params.token;
     const lobby = rummy.lobbys[code];
@@ -40,6 +41,11 @@ exports.showGameScreen = (req, res) => {
             const decoded = decodeToken(token);
             if( decoded ) {
                 req.user = decoded;
+                const user = await  User.findById(req.user._id);
+
+                if( user.balance <= 0 ) {
+                    return res.redirect('/home');
+                }
             } else {
                 return res.redirect('/login');
             }
