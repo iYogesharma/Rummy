@@ -41,9 +41,10 @@ exports.showGameScreen = async (req, res) => {
             const decoded = decodeToken(token);
             if( decoded ) {
                 req.user = decoded;
-                const user = await  User.findById(req.user._id);
 
-                if( user.balance <= 0 ) {
+                const user = await  User.findById(decoded._id);
+
+                if( !user || user.balance <= 0 ) {
                     return res.redirect('/home');
                 }
             } else {
