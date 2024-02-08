@@ -57,9 +57,7 @@ module.exports = class Lobby {
         this._process_choose_phase(playerIndex, data);
 
       } else {
-
         let card = this._getCard(this.playerCards[playerIndex], data);
-       
         if (card != null) {
 
           if(data.button == 'left') {
@@ -121,6 +119,10 @@ module.exports = class Lobby {
   _getCardByValue(cards, suit, value) {
     for (let card of cards) {
       if (card.suit == suit && card.value == value) {
+        return card;
+      } else if ( card.suit == suit && value == 13 &&  card.value == 0 ){
+        return card;
+      } else if ( card.suit == suit && value == 0 &&  card.value == 13 ){
         return card;
       }
     }
@@ -371,7 +373,7 @@ module.exports = class Lobby {
    * @param {Card} card - The card to be melded
    */
   _process_meld(playerIndex, card) {
-
+   
     let newMeld = this._create_new_meld(this.playerCards[playerIndex], card);
 
     if(newMeld.length >= 3) { //-> Create a new meld
@@ -429,7 +431,7 @@ module.exports = class Lobby {
    * @param {Card} targetCard - The card used to spawn a meld
    * @returns {Card[]} A meld
    */
-  _create_new_meld(cards, targetCard) {
+  _create_new_meld(cards,targetCard) {
 
     let isCard = (deck, suit, value) => this._getCardByValue(deck, suit, value) != null;
 
@@ -452,7 +454,7 @@ module.exports = class Lobby {
     /*-----------------------------------------------------------*/
 
     if(targetCard.value == 0) { // If it's an Ace try flipping its value
-      targetCard.value = 14;
+      targetCard.value = 13;
       let otherMeld = this._create_new_meld(cards, targetCard);
       if(otherMeld.length > suitMeld.length) {
         suitMeld = otherMeld;
@@ -510,7 +512,7 @@ module.exports = class Lobby {
     }
 
     if(targetCard.value == 0) { // If it's an Ace try flipping its value
-      targetCard.value = 14;
+      targetCard.value = 13;
       return this._create_similar_meld(targetCard)
     }
 
