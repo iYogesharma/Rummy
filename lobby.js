@@ -134,6 +134,7 @@ module.exports = class Lobby {
    * @param {Card[]} deck - A collection of cards
    */
   _sortDeck(deck) {
+   let avalue; let bvalue;
     deck.sort((a, b) => {
       a.value == 13 ? avalue = 0 :  avalue =   a.value;;
       b.value == 13 ? bvalue = 0 :   bvalue = b.value;
