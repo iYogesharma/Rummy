@@ -48,7 +48,22 @@ module.exports = class Lobby {
 
       this._process_join(ws,user);
 
-    } else if (data.cmd == 'click' && this.sockets.indexOf(ws) == this.turn) {
+    } 
+    else if ( data.cmd == 'reset' ) {
+      if ( this._recent_game_is_over() ) {
+        this._genCards();
+        this._send(ws, { // Send copy of current deck and layout to new client
+          cmd: 'reset',
+          cards: this.playerCards[socketIndex],
+          opcards: this.playerCards[socketIndex ^ 1].length,
+          deck: this.deck.length,
+          melds: this.melds,
+          draw: this.draw,
+          myturn: this.sockets.indexOf(ws) == this.turn
+        });
+      }
+    }
+    else if (data.cmd == 'click' && this.sockets.indexOf(ws) == this.turn) {
 
       let playerIndex = this.sockets.indexOf(ws);
 
@@ -56,21 +71,22 @@ module.exports = class Lobby {
 
         this._process_choose_phase(playerIndex, data);
 
-      } else {
-        let card = this._getCard(this.playerCards[playerIndex], data);
-        if (card != null) {
+    }
+    else {
+      let card = this._getCard(this.playerCards[playerIndex], data);
+      if (card != null) {
 
-          if(data.button == 'left') {
+        if(data.button == 'left') {
 
-            this._process_discard(playerIndex, card);
+          this._process_discard(playerIndex, card);
 
-          } else {
-            this._process_meld(playerIndex, card);
+        } else {
+          this._process_meld(playerIndex, card);
 
-          }
-          this._check_win();
         }
-      }
+        this._check_win();
+    }
+  }
 
     }
 
@@ -215,6 +231,20 @@ module.exports = class Lobby {
 
     return sum;
 
+  }
+
+  _recent_game_is_over() {
+    let lastGameIsOver = false;
+    let i = 0
+    for(i = 0; i < this.playerCards.length; i++) {
+      if(this.playerCards[i].length == 0) {
+        lastGameIsOver = true
+        break;
+      }
+    }
+
+    if(  i == this.playerCards.length ) return lastGameIsOver;
+   
   }
 
   /**

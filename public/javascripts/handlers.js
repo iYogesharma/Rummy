@@ -148,7 +148,15 @@ handle.addmeld = (data) => { // Handles the edit of a previous meld
 
 handle.win = (data) => { // Handle win
   $('#alert').attr('class', 'alert alert-success');
-  $('#alert').html(`<h4 class="alert-heading">You Won! Score: ${data.score}</h4><p id="exitmsg"></p>`);
+  $('#alert').html(`
+      <h4 class="alert-heading">You Won! Score: ${data.score}</h4>
+      <p id="exitmsg"></p>
+      <form method='POST' action='/game/replay'>
+          <input type='hidden' name='code' value='${code}' />
+          <input type='hidden' name='token' value='${token}' />
+        <button type='submit' > Replay</Button>
+      </form>
+  `);
   $('#alert').fadeToggle();
   $('.card').unbind('click');
   showConfetti();
@@ -156,8 +164,19 @@ handle.win = (data) => { // Handle win
 }
 
 handle.loss = (data) => { // Handle loss
+  let params = window.location.href.split("/"); // Extract Code and Token from URL
+  let code = params[4],
+    token = params[5];
   $('#alert').attr('class', 'alert alert-danger');
-  $('#alert').html('<h4 class="alert-heading">You Lost!</h4><p id="exitmsg"></p>');
+  $('#alert').html(`
+     <h4 class="alert-heading">You Lost!</h4>
+     <p id="exitmsg"></p> 
+     <form method='POST' action='/game/replay'>
+        <input type='hidden' name='code' value='${code}' />
+        <input type='hidden' name='token' value='${token}' />
+      <button type='submit' > Replay</Button>
+     </form>
+  `);
   $('#alert').fadeToggle();
   $('.card').unbind('click');
   beginLeave();
@@ -166,4 +185,9 @@ handle.loss = (data) => { // Handle loss
 handle.error = (data) => { // Handle loss
   alert(data.message)
   window.location.href = "/";
+}
+
+handle.reset = (data) => { // Handle loss
+  alert(data.message)
+  window.location.reload()
 }

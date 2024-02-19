@@ -12,6 +12,9 @@ router
     .get('/join/:lobby', Auth, GameControler.joinLobby)
   
     .get('/joincpu/:lobby', GameControler.joinCpuLobby)
+
+    .post('/replay', Auth, GameControler.replay)
   
     .get('/:lobby/:token', GameControler.showGameScreen)
+
     

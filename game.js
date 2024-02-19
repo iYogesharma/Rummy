@@ -40,6 +40,10 @@ module.exports = class Game {
 
   }
 
+  async _reset_game_play(lobby) {
+    await lobby.handleData({cmd: 'reset'})
+  }
+
   _user(req) {
     const {APP_NAME,COOKIE_ENCRYPT_SECRET} = process.env
     let token  = req.headers.cookie?.includes(APP_NAME+'=');
