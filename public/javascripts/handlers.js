@@ -189,7 +189,7 @@ handle.win = (data) => {
       <p id="exitmsg"></p>
       <form method='POST' action='/game/replay'>
           <input type='hidden' name='code' value='${code}'/>
-          <input type='hidden' name='token' value='${token}'/>
+          <input type='hidden' name='cpu' value='${data.cpu}'/>
           <div class="btn-title">
           <p>Play agin with same opponent</p>
           <div class="btn-spacing">
@@ -231,7 +231,7 @@ handle.loss = (data) => {
      <p id="exitmsg"></p> 
      <form method='POST' action='/game/replay'>
         <input type='hidden' name='code' value='${code}'/>
-        <input type='hidden' name='token' value='${token}'/>
+        <input type='hidden' name='cpu' value='${data.cpu}'/>
         <p>Play agin with same opponent</p>
       <button type='submit'  class="act-btn">Yes</Button>
       <button  class="act-btn">No</Button>

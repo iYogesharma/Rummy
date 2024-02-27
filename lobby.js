@@ -257,9 +257,10 @@ module.exports = class Lobby {
         if(this.sockets[i]?.user &&  this.sockets[i ^ 1]?.user) {
           this._credit_user(this.sockets[i].user);
           this._debit_user(this.sockets[i ^ 1].user);
+          cpu =true;
         }
-        this._send(this.sockets[i], {cmd: 'win', score: this._calculate_card_score(this.playerCards[i ^ 1])});
-        this._send(this.sockets[i ^ 1], {cmd: 'loss'});
+        this._send(this.sockets[i], {cmd: 'win', score: this._calculate_card_score(this.playerCards[i ^ 1]),cpu});
+        this._send(this.sockets[i ^ 1], {cmd: 'loss',cpu});
         this._doSelfDistruct();
         break;
       }
