@@ -66,13 +66,7 @@ exports.showGameScreen = async (req, res) => {
 
 exports.replay = async (req,res) => {
     const {code,cpu} = req.body;
-
-    let lobby = rummy.lobbys[code];
-
-    if( !lobby ) {
-        lobby = rummy.addLobby(code, cpu, req.user?._id) 
-    }
-    if( lobby && rummy.lobbys[code] ) {
+    if(  lobby = rummy.addLobby(code, cpu, req.user?._id)  ) {
         return res.redirect('/game/' + code + '/' + rummy.lobbys[code].token);
     } else {
         return res.redirect('/home');
