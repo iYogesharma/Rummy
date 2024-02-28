@@ -251,13 +251,13 @@ module.exports = class Lobby {
    * Checks If a Player Won and then Sends Win/Loss Data
    */
   _check_win() {
-    let cpu = false;
+    let cpu = true;
     for(let i = 0; i < this.playerCards.length; i++) {
       if(this.playerCards[i].length == 0) {
         if(this.sockets[i]?.user &&  this.sockets[i ^ 1]?.user) {
           this._credit_user(this.sockets[i].user);
           this._debit_user(this.sockets[i ^ 1].user);
-          cpu =true;
+          cpu =false;
         }
         this._send(this.sockets[i], {cmd: 'win', score: this._calculate_card_score(this.playerCards[i ^ 1]),cpu});
         this._send(this.sockets[i ^ 1], {cmd: 'loss',cpu});
