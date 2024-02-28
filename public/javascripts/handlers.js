@@ -194,17 +194,20 @@ handle.win = (data) => {
           <p>Play agin with same opponent</p>
           <div class="btn-spacing">
           <button type='submit' class="act-btn" >Yes</Button>
-          <button class="act-btn">No</Button>
+          <button class="act-btn btn-no">No</Button>
           </div>
           </div>
       </form>
   `);
-  $("#alert").fadeToggle();
+  $("#alert").fadeToggle();  $(".btn-no").bind("click");
   $(".card").unbind("click");
   showConfetti();
   beginLeave();
 };
 
+$(".btn-no").click( function() {
+  window.location.href = "/";
+})
 handle.loss = (data) => {
   // Handle loss
   let params = window.location.href.split("/"); // Extract Code and Token from URL
@@ -234,11 +237,11 @@ handle.loss = (data) => {
         <input type='hidden' name='cpu' value='${data.cpu}'/>
         <p>Play agin with same opponent</p>
       <button type='submit'  class="act-btn">Yes</Button>
-      <button  class="act-btn">No</Button>
+      <button  class="act-btn btn-no">No</Button>
      </form>
   `);
   $("#alert").fadeToggle();
-  $(".card").unbind("click");
+  $(".card").unbind("click");$(".btn-no").bind("click");
   beginLeave();
 };
 
